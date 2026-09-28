@@ -71,6 +71,7 @@ main{max-width:1080px;margin:0 auto;padding:18px 16px 0}
 .banner button{background:none;border:0;color:var(--accent-text);font-weight:700;cursor:pointer;padding:0}
 .banner .chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin:2px 0;color:var(--muted);font-weight:600;font-size:13px;background:var(--panel)}
 .banner .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.banner .get{color:var(--accent-text);font-weight:700;white-space:nowrap}
 h1{font-stretch:62%;font-weight:900;font-size:44px;line-height:.95;margin:0;letter-spacing:-.01em}
 h2{font-size:20px;font-weight:800;margin:34px 0 12px;letter-spacing:-.005em}
 h2 + .lede{margin-top:-6px}
@@ -371,6 +372,7 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
   var SAMPLES = /*SAMPLES*/null;   // demo page only: a made-up league at different points of a season
   var GAS = typeof google !== 'undefined' && google.script && google.script.run;
   var STORE_KEY = 'leaguehub_feed_v1';
+  var PROJECT_URL = 'https://github.com/rcammerata/leaguehub';   // League Hub's home: setup guide and downloads
 
   var state = { data: null, fetchedAt: 0, failed: false, view: 'week', hash: '', loading: false, standMode: 'overall', scoresMp: 0, hlTeam: '', matchTeam: '', weekScroll: 0 };
   var CHEV = '<svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
@@ -592,7 +594,7 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
     if (state.sample) {
       msg = 'A made-up league, to show what League Hub looks like. Show it: ' + SAMPLES.map(function (x) {
         return '<button type="button" class="chip" data-sample="' + esc(x.id) + '" aria-pressed="' + (x.id === state.sample) + '">' + esc(x.label) + '</button>';
-      }).join(' ');
+      }).join(' ') + ' <a class="get" href="' + PROJECT_URL + '" target="_blank" rel="noopener">Get League Hub for your league</a>';
     }
     else if (state.failed) msg = 'Couldn’t reach the league data. Showing what was loaded before. <button type="button" data-act="retry">Try Again</button>';
     else if (f.ok && (f.stale || (f.status && f.status.ok === false))) {
@@ -616,7 +618,8 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
     var every = num((f.refresh || {}).minutes);
     $('#footer').innerHTML = f.ok ? '<p>Scores come from ESPN' + (every && every <= 15 ? ' and update about every ' + every + ' minutes during games' : '') + '. ' +
       '<a href="' + esc(L.espnUrl) + '" target="_blank" rel="noopener">Open the league on ESPN</a> · <a href="#commish">Commissioner Tools</a></p>' +
-      '<p>Made with League Hub. Not affiliated with ESPN.</p>' : '<p>Made with League Hub.</p>';
+      '<p>Made with <a href="' + PROJECT_URL + '" target="_blank" rel="noopener">League Hub</a>. Not affiliated with ESPN.</p>' :
+      '<p>Made with <a href="' + PROJECT_URL + '" target="_blank" rel="noopener">League Hub</a>.</p>';
   }
 
   // ====== This Week ======
