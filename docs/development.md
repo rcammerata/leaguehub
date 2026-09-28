@@ -46,6 +46,7 @@ npm install
 npx playwright install chromium
 npm run test:browser       # the real page against the real scripts: Apps Script mode, self-hosted mode, the demo
 npm run screenshots        # docs/images
+npm run social-preview     # docs/images/social-preview.png, the picture shown when the repo's link is shared
 ```
 
 Run `node build.js` after changing anything in `apps-script/` or `site/`, and commit the rebuilt `dist/` and `docs/demo/` with your change. A test fails if `dist/` is out of date.

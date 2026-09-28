@@ -8,7 +8,8 @@
     "build": "node build.js",
     "test": "node tests/run_tests.js",
     "test:browser": "node tests/browser_test.js",
-    "screenshots": "node tools/screenshots.js"
+    "screenshots": "node tools/screenshots.js",
+    "social-preview": "node tools/social_preview.js"
   },
   "devDependencies": {
     "playwright": "^1.56.0"
