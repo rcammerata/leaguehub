@@ -13,11 +13,11 @@ const SITE = fs.readFileSync(path.join(ROOT, 'dist', 'self-hosted', 'index.html'
 const SHOTS = [
   { file: 'phone-week.png', scenario: 'week5', hash: 'week', size: 'phone', scheme: 'dark' },
   { file: 'phone-matchup.png', scenario: 'week5', hash: 'm/1', size: 'phone', scheme: 'dark' },
-  { file: 'phone-playoffs.png', scenario: 'week16', hash: 'playoffs', size: 'phone', scheme: 'light' },
-  { file: 'phone-money.png', scenario: 'complete', hash: 'money', size: 'phone', scheme: 'light' },
+  { file: 'phone-playoffs.png', scenario: 'week16', hash: 'playoffs', size: 'phone', scheme: 'dark' },
+  { file: 'phone-money.png', scenario: 'complete', hash: 'money', size: 'phone', scheme: 'dark' },
   { file: 'phone-draft.png', scenario: 'predraft', hash: 'draft', size: 'phone', scheme: 'dark' },
   { file: 'desktop-standings.png', scenario: 'week5', hash: 'standings', size: 'desktop', scheme: 'dark' },
-  { file: 'desktop-league.png', scenario: 'complete', hash: 'league', size: 'desktop', scheme: 'light' }
+  { file: 'desktop-league.png', scenario: 'complete', hash: 'league', size: 'desktop', scheme: 'dark' }
 ];
 const SIZES = { phone: { width: 390, height: 844, deviceScaleFactor: 2 }, desktop: { width: 1280, height: 860, deviceScaleFactor: 1 } };
 
