@@ -1,17 +1,14 @@
-<img src="docs/images/logo.svg" width="56" height="56" alt="">
+<a href="https://rcammerata.github.io/leaguehub/demo/"><img src="docs/images/social-preview.png" width="100%" alt="League Hub: a website for your ESPN fantasy football league, run from a Google Sheet. Live scores, standings, playoffs, dues and prizes, league history."></a>
 
-# League Hub
-
-**A website for your ESPN fantasy football league, run from a Google Sheet.**
 Live scores, standings, the playoff bracket, league money and history, on a page your whole league can open on their phones.
 It's free, there's no server to run, and you don't need to write any code. Setup takes about 15 minutes.
 
 **[Live demo](https://rcammerata.github.io/leaguehub/demo/)** · **[Set it up](docs/setup.md)** · [All guides](#guides)
 
 <p>
-  <img src="docs/images/phone-week.png" width="240" alt="This Week: live scores and projections">
-  <img src="docs/images/phone-matchup.png" width="240" alt="A matchup, player by player">
   <img src="docs/images/phone-playoffs.png" width="240" alt="The playoff bracket">
+  <img src="docs/images/phone-money.png" width="240" alt="The Money page: the settle-up after the season">
+  <img src="docs/images/phone-draft.png" width="240" alt="Draft season: countdown, draft order and keepers">
 </p>
 
 **[Try the live demo](https://rcammerata.github.io/leaguehub/demo/)**. It's a made-up league you can click through at four points of a season: a live week, the playoffs, the end of the season and before the draft.
