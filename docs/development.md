@@ -2,7 +2,7 @@
 
 For people who want to change League Hub or help with it. Using League Hub doesn't need any of this.
 
-## The project
+## The Project
 
 ```
 apps-script/        The Apps Script code, one file per topic (the source of dist/Code.gs)
@@ -18,7 +18,7 @@ apps-script/        The Apps Script code, one file per topic (the source of dist
   Feed.gs           the timer: when to update, caching, the last good copy, alert emails
   WebApp.gs         doGet (the website and ?format=json) and doPost
   Commissioner.gs   Commissioner Tools: passcode, payments, cookies, update now
-  Setup.gs          the League Hub menu, Set up, the cookies window, Status, Help
+  Setup.gs          the League Hub menu, Set Up, the cookies window, Status, Help
   appsscript.json   manifest, for people who use clasp
 site/index.html     the website: one HTML file with its CSS and JavaScript, no libraries
 build.js            builds dist/ and docs/demo/ from the two folders above
@@ -30,7 +30,7 @@ tools/              the screenshot script
 
 Apps Script runs every `.gs` file in one shared scope, in the order the files were added. `build.js` joins them into one `Code.gs` in a fixed order, so people only have to paste one file. No file uses another file's constants while loading (a test checks this by loading them in reverse order).
 
-## Build and test
+## Build & Test
 
 You need [Node.js](https://nodejs.org) 18 or newer.
 
@@ -51,13 +51,13 @@ npm run social-preview     # docs/images/social-preview.png, the picture shown w
 
 Run `node build.js` after changing anything in `apps-script/` or `site/`, and commit the rebuilt `dist/` and `docs/demo/` with your change. A test fails if `dist/` is out of date.
 
-## How the tests work
+## How the Tests Work
 
 - `tests/gas_mocks.js` has small stand-ins for the Apps Script services League Hub uses (SpreadsheetApp, PropertiesService, CacheService, UrlFetchApp and so on), and runs the `.gs` files in a Node `vm` context with a frozen clock.
 - `tests/fake_league.js` is a made-up 10-team league ("Sunday Funday League", real NFL player names, made-up managers) that answers League Hub's ESPN and NFL scoreboard requests. It covers four points of a season: `week5` (live games), `week16` (playoff semifinals), `complete` (season over) and `predraft` (the next season before its draft), plus a private-league mode, expired cookies and an NFL scoreboard outage.
 - `tests/sample_feeds.js` builds the website's data for those four points, for the tests, the demo page and the screenshots. `node tests/sample_feeds.js` writes them to `tests/out/`.
 
-## The website's data
+## The Website's Data
 
 `lhGetFeed()` (and `?format=json` on the web app) returns one JSON object. The main parts:
 

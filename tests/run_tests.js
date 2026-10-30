@@ -91,7 +91,35 @@ test('Settings tab: built with every setting, and rebuilding keeps what was ente
   const s = w.lhSettings_();
   assert.equal(s.leagueName, 'The Big Game');
   assert.equal(w.lhReadSettingsRaw_().values.entry_fee, 75);
-  deepEqual(w.lhReadSettingsRaw_().prizes.filter(p => p[0]).map(p => p[0]), ['Champion', 'Runner-up', 'Third place', 'Most points']);
+  deepEqual(w.lhReadSettingsRaw_().prizes.filter(p => p[0]).map(p => p[0]), ['Champion', 'Runner-Up', 'Third Place', 'Most Points']);
+});
+
+test('Settings tab: a sheet from before Title Case keeps working, and a rebuild updates its wording', () => {
+  const w = makeWorld();
+  w.lhBuildSettingsSheet_();
+  const rows = w.__.sheets.Settings._data.rows;
+  const at = key => rows.findIndex(r => r[3] === key);
+  rows[at('logo')][1] = 'Goal post';
+  rows[at('manager_names')][1] = 'full name';
+  rows[at('dues_when')][1] = 'At the end of the season';
+  rows[at('weekly_prize_weeks')][1] = 'Every week';
+  const prize = rows.findIndex(r => r[3] === '#prize');
+  rows[prize + 1][0] = 'Runner-up'; rows[prize + 1][2] = 'Runner-up';
+  rows[prize + 3][2] = 'Most points (regular season)';
+  rows[prize + 4][0] = 'Best team name'; rows[prize + 4][1] = '20'; rows[prize + 4][2] = 'The Replacements';
+  w.__.reset && w.__.reset();
+  let s = w.lhSettings_();
+  assert.equal(s.logo, 'goalpost');
+  assert.equal(s.money.duesUpFront, false);
+  assert.equal(s.money.weeklyAllWeeks, true);
+  w.lhBuildSettingsSheet_();
+  const raw = w.lhReadSettingsRaw_();
+  assert.equal(raw.values.logo, 'Goal Post');
+  assert.equal(raw.values.manager_names, 'Full Name');
+  assert.equal(raw.values.dues_when, 'At the End of the Season');
+  assert.equal(raw.values.weekly_prize_weeks, 'Every Week');
+  deepEqual(raw.prizes.filter(p => p[0]).map(p => [p[0], p[2]]), [['Champion', 'Champion'], ['Runner-Up', 'Runner-Up'],
+    ['Third Place', 'Third Place'], ['Most Points', 'Most Points (Regular Season)'], ['Best team name', 'The Replacements']]);
 });
 
 test('league ID from a link or a number', () => {
@@ -131,9 +159,9 @@ test('settings problems are listed for the Status window', () => {
   w.lhSetSetting_('entry_fee', 'a lot');
   const p = w.lhSettings_().problems.join(' | ');
   assert.match(p, /league ID/);
-  assert.match(p, /Accent color/);
+  assert.match(p, /Accent Color/);
   assert.match(p, /Season should be/);
-  assert.match(p, /Entry fee/);
+  assert.match(p, /Entry Fee per Team/);
   w.lhSetSetting_('accent', '1e90ff');
   assert.equal(w.lhSettings_().accent, '#1e90ff');
 });
@@ -158,7 +186,7 @@ test('Set up, public league: asks for the league, connects, starts updates, show
   assert.equal(w.lhSettings_().leagueId, fake.LEAGUE_ID);
   deepEqual(w.__.triggers.map(t => [t.fn, t.minutes]), [['refreshLeague', 5]]);
   const dialog = w.__.ui.find(u => u.type === 'dialog');
-  assert.equal(dialog.title, 'League Hub is set up');
+  assert.equal(dialog.title, 'League Hub Is Set Up');
   assert.match(dialog.html, /Sunday Funday League/);
   assert.match(dialog.html, /New deployment/);
   assert.equal(JSON.parse(w.lhGetFeed()).ok, true);
@@ -182,14 +210,14 @@ test('Set up with a bad link changes nothing', () => {
   w.leagueHubSetup();
   assert.equal(w.lhSettings_().leagueId, '');
   assert.equal(w.__.triggers.length, 0);
-  assert.match(w.__.ui.map(u => u.title).join('|'), /doesn't look like an ESPN league address/);
+  assert.match(w.__.ui.map(u => u.title).join('|'), /Doesn't Look Like an ESPN League Address/);
 });
 
 test('Set up, private league: asks for ESPN cookies, tests them, then finishes', () => {
   const w = makeWorld({ now: fake.NOW.week5, fetch: fake.makeFetch('week5', { private: true }), ui: { prompts: [fake.LEAGUE_ID], alerts: ['YES'] } });
   w.leagueHubSetup();
-  assert.ok(w.__.ui.find(u => u.title === 'Your league is private'));
-  assert.equal(w.__.ui.find(u => u.type === 'dialog').title, 'ESPN cookies (private leagues)');
+  assert.ok(w.__.ui.find(u => u.title === 'Your League Is Private'));
+  assert.equal(w.__.ui.find(u => u.type === 'dialog').title, 'ESPN Cookies (Private Leagues)');
   assert.equal(w.__.triggers.length, 0, 'no timer until the cookies work');
   const key = w.__.cache.LH_COOKIE_KEY;
   assert.ok(w.__.ui.find(u => u.type === 'dialog').html.indexOf(key) > -1, 'the window carries its one-time key');
@@ -234,7 +262,7 @@ test('the menu\'s actions can\'t be run from the website', () => {
   w.onEdit({ range: 'not a range' });   // harmless
 });
 
-test('Commissioner passcode: set, change, turn off', () => {
+test('Commissioner Passcode: set, change, turn off', () => {
   const w = makeWorld({ ui: { prompts: ['short', 'longenough1', 'longenough1', 'OFF'] } });
   w.leagueHubPasscode();
   assert.equal(w.__.props.LH_PASS, undefined, 'too short');
@@ -328,7 +356,7 @@ test('season over: champion, places, prize winners, history', () => {
   deepEqual(final.map(g => g.kind), ['final', 'third']);
   const prize = name => f.money.prizes.find(p => p.name === name);
   deepEqual(prize('Champion').winners, [teamId(f, 'Red Zone Rebels')]);
-  deepEqual(prize('Most points').winners, [f.teams.slice().sort((a, b) => b.pf - a.pf)[0].id]);
+  deepEqual(prize('Most Points').winners, [f.teams.slice().sort((a, b) => b.pf - a.pf)[0].id]);
   assert.equal(f.history[0].season, 2026);
   assert.equal(f.history[0].champion.name, 'Red Zone Rebels');
   assert.equal(f.refresh.minutes, 120);

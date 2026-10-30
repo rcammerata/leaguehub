@@ -1,4 +1,4 @@
-# Hosting the website
+# Hosting the Website
 
 There are two ways to give your league the website. Both show the same pages with the same data.
 
@@ -12,16 +12,16 @@ There are two ways to give your league the website. Both show the same pages wit
 
 ---
 
-## Option A: the Apps Script address
+## Option A: The Apps Script Address
 
 This is what [Setup](setup.md#4-publish-the-website) gives you: Apps Script publishes the website and the page comes with the latest data built in.
 
-- Find the address anytime: **League Hub → Status and website address**, or in Apps Script under **Deploy → Manage deployments**.
+- Find the address anytime: **League Hub → Status & Website Address**, or in Apps Script under **Deploy → Manage deployments**.
 - The address stays the same as long as you keep that deployment. When you [update League Hub](updating.md), edit the existing deployment (**Manage deployments** → pencil icon → **Version: New version** → **Deploy**) instead of making a new one, so the address doesn't change.
 - To shorten it, put it behind a short link from any link shortener.
 - To put it on a Google Site: in Google Sites, **Insert → Embed → By URL**, and paste the address.
 
-## Option B: host the page yourself
+## Option B: Host the Page Yourself
 
 The website is a single file. You can put it on any web host, and it reads your league's data from your Apps Script web app. So do Option A first: the Apps Script web app has to stay published.
 
@@ -46,7 +46,7 @@ The website is a single file. You can put it on any web host, and it reads your 
 
 Both hosts let you use your own domain name. See their help pages if you want one.
 
-### Good to know
+### Good to Know
 
 - The page asks Apps Script for new data every few minutes while it's open, and saves the last data in the browser so it opens instantly next time.
 - Scores never require uploading the page again, because they come from Apps Script. You only upload again when you update League Hub. That matters on hosts that count uploads: Netlify's free plan, for example, charges each deploy against a monthly allowance.

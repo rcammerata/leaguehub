@@ -1,6 +1,6 @@
 # Setting up League Hub
 
-League Hub is for leagues that play on ESPN but want more than ESPN offers: dues and payouts tracked automatically, the league's own prizes and rules, league history, and one website for everyone. See [Who it's for](../README.md#who-its-for).
+League Hub is for leagues that play on ESPN but want more than ESPN offers: dues and payouts tracked automatically, the league's own prizes and rules, league history, and one website for everyone. See [Who it's For](../README.md#who-its-for).
 
 Setup takes about 15 minutes, and only the commissioner (or whoever runs the website) does it. League members don't need to do anything but open the link.
 
@@ -10,23 +10,23 @@ Use a computer for setup. The Apps Script editor doesn't work well on phones.
 
 **Contents**
 
-1. [Make the spreadsheet](#1-make-the-spreadsheet)
-2. [Add the League Hub code](#2-add-the-league-hub-code)
-3. [Run Set up](#3-run-set-up)
-4. [Publish the website](#4-publish-the-website)
-5. [Share it with your league](#5-share-it-with-your-league)
-6. [Optional extras](#6-optional-extras)
+1. [Make the Spreadsheet](#1-make-the-spreadsheet)
+2. [Add the League Hub Code](#2-add-the-league-hub-code)
+3. [Run Set Up](#3-run-set-up)
+4. [Publish the Website](#4-publish-the-website)
+5. [Share it with Your League](#5-share-it-with-your-league)
+6. [Optional Extras](#6-optional-extras)
 
 ---
 
-## 1. Make the spreadsheet
+## 1. Make the Spreadsheet
 
 1. Go to [sheets.new](https://sheets.new) (or Google Drive → **New → Google Sheets**) while signed in to your Google account.
 2. Give it a name, like "League Hub". Click "Untitled spreadsheet" at the top left to rename it.
 
 A personal Google account works best. School and work accounts sometimes aren't allowed to publish public web pages (see [Troubleshooting](troubleshooting.md#the-website-asks-people-to-sign-in-to-google)).
 
-## 2. Add the League Hub code
+## 2. Add the League Hub Code
 
 League Hub is two files: `Code.gs` (the part that talks to ESPN) and `Index.html` (the website).
 
@@ -40,10 +40,10 @@ League Hub is two files: `Code.gs` (the part that talks to ESPN) and `Index.html
 
 You should now have two files: `Code.gs` and `Index.html`.
 
-## 3. Run Set up
+## 3. Run Set Up
 
 1. Go back to the spreadsheet tab and **reload the page**. After a few seconds a **League Hub** menu appears at the top, next to Help.
-2. Click **League Hub → Set up (start here)**.
+2. Click **League Hub → Set Up (Start Here)**.
 3. Google asks for permission the first time:
    1. **Authorization required** → click **OK** (or **Continue**) and pick your Google account.
    2. **Google hasn't verified this app** → click **Advanced**, then **Go to League Hub (unsafe)**.
@@ -54,17 +54,17 @@ You should now have two files: `Code.gs` and `Index.html`.
       - *Allow this application to run when you are not present*: the timer that keeps scores up to date.
       - *Display and run third-party web content in prompts and sidebars*: League Hub's setup windows.
       - *Send email as you*: an optional note to **you** if updates stop working (for example, expired ESPN cookies). It never emails anyone else.
-4. If nothing else happens after you click Allow, click **League Hub → Set up (start here)** again. (The first click sometimes only asks for permission.)
+4. If nothing else happens after you click Allow, click **League Hub → Set Up (Start Here)** again. (The first click sometimes only asks for permission.)
 5. League Hub adds two tabs, **Settings** and **Payments**, and asks for your league:
    - On ESPN, open your league (on a computer, at [fantasy.espn.com](https://fantasy.espn.com)) and copy the address from the browser's address bar. It looks like `https://fantasy.espn.com/football/league?leagueId=12345678`.
    - Paste it into the box and click **OK**. Just the number (`12345678`) works too.
 6. League Hub checks the league with ESPN:
    - **Public league**: you see "Connected" with your league's name. Continue with step 4 below.
-   - **Private league**: League Hub asks for your ESPN cookies. Click **Yes** and follow [Private leagues](private-leagues.md). It takes about two minutes.
+   - **Private league**: League Hub asks for your ESPN cookies. Click **Yes** and follow [Private Leagues](private-leagues.md). It takes about two minutes.
 
 From now on the sheet updates your league's data by itself, every few minutes during games.
 
-## 4. Publish the website
+## 4. Publish the Website
 
 1. Go back to the Apps Script tab (or click **Extensions → Apps Script** again).
 2. Click the blue **Deploy** button at the top right → **New deployment**.
@@ -78,9 +78,9 @@ From now on the sheet updates your league's data by itself, every few minutes du
 
 "Execute as: Me" means the website runs as you, so it can read the league data your script saved. Visitors can only see the website. They can't see your spreadsheet or your Google account.
 
-You can find this address again anytime: **League Hub → Status and website address**, or in Apps Script under **Deploy → Manage deployments**.
+You can find this address again anytime: **League Hub → Status & Website Address**, or in Apps Script under **Deploy → Manage deployments**.
 
-## 5. Share it with your league
+## 5. Share it with Your League
 
 - Send the link in your league's group chat.
 - On an iPhone, open it in Safari, tap **Share → Add to Home Screen** to get an app-like icon. On Android, open it in Chrome, tap the **⋮** menu → **Add to Home screen**.
@@ -88,11 +88,11 @@ You can find this address again anytime: **League Hub → Status and website add
 
 Google shows a small gray bar at the top of Apps Script websites ("This application was created by a Google Apps Script user"). That's normal. It goes away if you [host the page yourself](hosting.md#option-b-host-the-page-yourself).
 
-## 6. Optional extras
+## 6. Optional Extras
 
-- **Make it yours**: the **Settings** tab has the league name, accent color, how manager names show, your league's rules and more. See [Settings](settings.md).
-- **Money page**: set **Money page** to **Yes** on the Settings tab and fill in your fees and prizes. See [Money](money.md).
-- **Commissioner Tools**: click **League Hub → Commissioner passcode** and pick a passcode (8 or more characters). Then the link at the bottom of the website, "Commissioner Tools", lets you record payments, paste new ESPN cookies and update right away from your phone.
-- **Check on it**: **League Hub → Status and website address** shows when the last update ran, whether it worked and your website's address.
+- **Make it Yours**: the **Settings** tab has the league name, accent color, how manager names show, your league's rules and more. See [Settings](settings.md).
+- **Money Page**: set **Money Page** to **Yes** on the Settings tab and fill in your fees and prizes. See [Money](money.md).
+- **Commissioner Tools**: click **League Hub → Commissioner Passcode** and pick a passcode (8 or more characters). Then the link at the bottom of the website, "Commissioner Tools", lets you record payments, paste new ESPN cookies and update right away from your phone.
+- **Check on it**: **League Hub → Status & Website Address** shows when the last update ran, whether it worked and your website's address.
 
 That's it. When a new version of League Hub comes out, see [Updating](updating.md).

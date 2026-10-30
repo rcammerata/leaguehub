@@ -3,7 +3,7 @@
  *
  * Every setting lives on the "Settings" tab of the spreadsheet: column A is the name, column B the value
  * you edit, column C explains it, and hidden column D holds the setting's key (so renaming column A is
- * harmless). Running League Hub → Set up again rebuilds the tab and keeps every value you entered.
+ * harmless). Running League Hub → Set Up again rebuilds the tab and keeps every value you entered.
  *
  * Secrets never go on the sheet: ESPN cookies and the commissioner passcode are kept in Script Properties.
  */
@@ -35,60 +35,70 @@ const LH_PRIZE_RULES = {
 };
 
 const LH_SETTINGS = [
-  { section: 'ESPN league' },
-  { key: 'league_id', label: 'ESPN league ID or link', def: '',
-    help: 'Paste your league\'s ESPN web address, or just the number after leagueId=. Private leagues also need ESPN cookies (League Hub menu → ESPN cookies).' },
+  { section: 'ESPN League' },
+  { key: 'league_id', label: 'ESPN League ID or Link', def: '',
+    help: 'Paste your league\'s ESPN web address, or just the number after leagueId=. Private leagues also need ESPN cookies (League Hub menu → ESPN Cookies).' },
   { key: 'season', label: 'Season', def: 'Auto',
     help: 'Auto follows the current season. Type a year (like 2025) to show that season instead.' },
 
   { section: 'Website' },
-  { key: 'league_name', label: 'League name', def: '', help: 'Leave blank to use the name on ESPN.' },
-  { key: 'accent', label: 'Accent color', def: 'Blue', options: ['Blue', 'Green', 'Red', 'Purple', 'Orange', 'Teal', 'Pink', 'Gold'], allowOther: true,
+  { key: 'league_name', label: 'League Name', def: '', help: 'Leave blank to use the name on ESPN.' },
+  { key: 'accent', label: 'Accent Color', def: 'Blue', options: ['Blue', 'Green', 'Red', 'Purple', 'Orange', 'Teal', 'Pink', 'Gold'], allowOther: true,
     help: 'The highlight color of the website. Pick one, or type a color code like #1e90ff.' },
-  { key: 'logo', label: 'Logo', def: 'Football', options: ['Football', 'Trophy', 'Goal post', 'First letter'],
-    help: 'The picture in the top corner of the website, on your accent color. First letter uses the first letter of the league name.' },
-  { key: 'manager_names', label: 'Manager names', def: 'First name + last initial',
-    options: ['First name + last initial', 'Full name', 'ESPN username', 'Hide'],
+  { key: 'logo', label: 'Logo', def: 'Football', options: ['Football', 'Trophy', 'Goal Post', 'First Letter'],
+    help: 'The picture in the top corner of the website, on your accent color. First Letter uses the first letter of the league name.' },
+  { key: 'manager_names', label: 'Manager Names', def: 'First Name + Last Initial',
+    options: ['First Name + Last Initial', 'Full Name', 'ESPN Username', 'Hide'],
     help: 'How managers are named on the website. Names come from ESPN.' },
-  { key: 'founded', label: 'Year the league started', def: '', help: 'Optional. Shown with the league history.' },
-  { key: 'rules', label: 'League rules', def: '',
+  { key: 'founded', label: 'Year the League Started', def: '', help: 'Optional. Shown with the league history.' },
+  { key: 'rules', label: 'League Rules', def: '',
     help: 'Optional. Shown on the League page. Put each rule on its own line (Ctrl+Enter or ⌘+Enter starts a new line in a cell).' },
-  { key: 'show_win_prob', label: 'Show win probability', def: 'Yes', options: ['Yes', 'No'], help: 'On each matchup page.' },
-  { key: 'show_bench', label: 'Show bench players', def: 'Yes', options: ['Yes', 'No'], help: 'On each matchup page.' },
-  { key: 'show_history', label: 'Show league history', def: 'Yes', options: ['Yes', 'No'],
+  { key: 'show_win_prob', label: 'Show Win Probability', def: 'Yes', options: ['Yes', 'No'], help: 'On each matchup page.' },
+  { key: 'show_bench', label: 'Show Bench Players', def: 'Yes', options: ['Yes', 'No'], help: 'On each matchup page.' },
+  { key: 'show_history', label: 'Show League History', def: 'Yes', options: ['Yes', 'No'],
     help: 'Past champions and top scorers, read from ESPN (seasons before 2018 need ESPN cookies).' },
 
   { section: 'Money' },
-  { key: 'money_page', label: 'Money page', def: 'No', options: ['Yes', 'No'],
+  { key: 'money_page', label: 'Money Page', def: 'No', options: ['Yes', 'No'],
     help: 'Yes adds a page with dues, fees, prizes and who owes what. Record payments on the Payments tab or in Commissioner Tools on the website.' },
-  { key: 'entry_fee', label: 'Entry fee per team', def: 0, money: true, help: 'What each team pays to join.' },
-  { key: 'keeper_fee', label: 'Keeper fees', def: '',
+  { key: 'entry_fee', label: 'Entry Fee per Team', def: 0, money: true, help: 'What each team pays to join.' },
+  { key: 'keeper_fee', label: 'Keeper Fees', def: '',
     help: 'Optional. One amount for every keeper (like 20), or amounts by the round the player went in last season\'s draft, like 1:50, 2:40, 3:30, K:50, UD:0 (K = kept last season too, UD = undrafted). Rounds you leave out are free.' },
-  { key: 'dues_when', label: 'Entry fee is due', def: 'Before the season', options: ['Before the season', 'At the end of the season'],
-    help: 'Before the season: teams pay the entry fee and keeper fees up front, and the rest (pickup and trade fees against prizes) is settled after the season. At the end of the season: everything is settled then.' },
-  { key: 'pickup_fee', label: 'Fee per player pickup', def: 0, money: true, help: 'Charged for each player a team adds (free agents and waiver claims). Settled after the season.' },
-  { key: 'free_pickups', label: 'Free pickups per team', def: 0, help: 'How many pickups each team gets before the pickup fee starts.' },
-  { key: 'trade_fee', label: 'Fee per trade', def: 0, money: true, help: 'Charged to each team in a trade. Settled after the season.' },
-  { key: 'weekly_prize', label: 'Weekly high score prize', def: 0, money: true, help: 'Paid to the top scorer each week. Ties split it.' },
-  { key: 'weekly_prize_weeks', label: 'Weekly prize weeks', def: 'Regular season', options: ['Regular season', 'Every week'],
-    help: 'Every week includes the playoff weeks (every team that played counts).' },
+  { key: 'dues_when', label: 'Entry Fee Is Due', def: 'Before the Season', options: ['Before the Season', 'At the End of the Season'],
+    help: 'Before the Season: teams pay the entry fee and keeper fees up front, and the rest (pickup and trade fees against prizes) is settled after the season. At the End of the Season: everything is settled then.' },
+  { key: 'pickup_fee', label: 'Fee per Player Pickup', def: 0, money: true, help: 'Charged for each player a team adds (free agents and waiver claims). Settled after the season.' },
+  { key: 'free_pickups', label: 'Free Pickups per Team', def: 0, help: 'How many pickups each team gets before the pickup fee starts.' },
+  { key: 'trade_fee', label: 'Fee per Trade', def: 0, money: true, help: 'Charged to each team in a trade. Settled after the season.' },
+  { key: 'weekly_prize', label: 'Weekly High Score Prize', def: 0, money: true, help: 'Paid to the top scorer each week. Ties split it.' },
+  { key: 'weekly_prize_weeks', label: 'Weekly Prize Weeks', def: 'Regular Season', options: ['Regular Season', 'Every Week'],
+    help: 'Every Week includes the playoff weeks (every team that played counts).' },
 
   { prizes: true },
 
   { section: 'Updates' },
-  { key: 'refresh_minutes', label: 'Update every (minutes)', def: '5', options: ['5', '10', '15', '30'],
+  { key: 'refresh_minutes', label: 'Update Every (Minutes)', def: '5', options: ['5', '10', '15', '30'],
     help: 'How often scores update while NFL games are on. When no games are on, updates are less frequent.' },
-  { key: 'alert_email', label: 'Email me when something breaks', def: 'Yes', options: ['Yes', 'No'],
+  { key: 'alert_email', label: 'Email Me When Something Breaks', def: 'Yes', options: ['Yes', 'No'],
     help: 'At most one email a day, for example when ESPN cookies expire. It goes to the Google account that owns this sheet.' }
 ];
 
 const LH_DEFAULT_PRIZES = [
   ['Champion', '50%', 'Champion'],
-  ['Runner-up', '25%', 'Runner-up'],
-  ['Third place', '10%', 'Third place'],
-  ['Most points', '15%', 'Most points (regular season)']
+  ['Runner-Up', '25%', 'Runner-Up'],
+  ['Third Place', '10%', 'Third Place'],
+  ['Most Points', '15%', 'Most Points (Regular Season)']
 ];
 const LH_PRIZE_ROWS = 8;
+// The Winner dropdown: every prize rule, as it's written on the sheet
+const LH_PRIZE_RULE_NAMES = ['Champion', 'Runner-Up', 'Third Place', 'Most Points (Regular Season)', 'Most Points (All Season)',
+                             'Best Regular-Season Record', 'Last Place'];
+
+// A dropdown value in the current wording (older sheets used sentence case, like "Goal Post"); anything else as is
+function lhCanonical_(value, choices) {
+  const k = lhKey_(value);
+  for (let i = 0; i < choices.length; i++) if (lhKey_(choices[i]) === k) return choices[i];
+  return value;
+}
 
 // ===================== Reading =====================
 
@@ -151,7 +161,7 @@ function lhSettings_() {
   if (!accent) {
     const hex = lhStr_(val('accent'));
     if (/^#?[0-9a-f]{6}$/i.test(hex)) accent = hex.charAt(0) === '#' ? hex : '#' + hex;
-    else { accent = LH_ACCENTS.blue; problems.push('Accent color should be one of the listed colors or a code like #1e90ff.'); }
+    else { accent = LH_ACCENTS.blue; problems.push(lhLabel_('accent') + ' should be one of the listed colors or a code like #1e90ff.'); }
   }
   const logo = LH_LOGOS[lhKey_(val('logo'))] || 'football';
 
@@ -252,7 +262,7 @@ function lhParseKeeperFees_(v) {
   return { flat: 0, byTag: byTag };
 }
 
-// ===================== Writing (Set up) =====================
+// ===================== Writing (Set Up) =====================
 
 // Builds (or rebuilds) the Settings tab, keeping every value already entered
 function lhBuildSettingsSheet_() {
@@ -266,8 +276,8 @@ function lhBuildSettingsSheet_() {
   const validations = [];
   const push = (r, style, validation) => { rows.push(r); styles.push(style); validations.push(validation || null); };
 
-  push(['League Hub settings', '', '', '#title'], 'title');
-  push(['Change the values in column B. The website picks up changes within a few minutes (or use League Hub → Update now).', '', '', '#note'], 'note');
+  push(['League Hub Settings', '', '', '#title'], 'title');
+  push(['Change the values in column B. The website picks up changes within a few minutes (or use League Hub → Update Now).', '', '', '#note'], 'note');
 
   LH_SETTINGS.forEach(spec => {
     if (spec.section) { push(['', '', '', '#blank'], 'blank'); push([spec.section, '', '', '#section'], 'section'); return; }
@@ -281,12 +291,12 @@ function lhBuildSettingsSheet_() {
       const list = old.missing ? LH_DEFAULT_PRIZES : old.prizes.filter(p => lhStr_(p[0]) || lhStr_(p[1]) || lhStr_(p[2]));
       for (let i = 0; i < Math.max(LH_PRIZE_ROWS, list.length); i++) {
         const p = list[i] || ['', '', ''];
-        push([p[0], p[1], p[2], '#prize'], 'prize', 'prize');
+        push([lhCanonical_(p[0], LH_DEFAULT_PRIZES.map(x => x[0])), p[1], lhCanonical_(p[2], LH_PRIZE_RULE_NAMES), '#prize'], 'prize', 'prize');
       }
       return;
     }
     const has = Object.prototype.hasOwnProperty.call(old.values, spec.key);
-    const value = has ? old.values[spec.key] : spec.def;
+    const value = has ? (spec.options ? lhCanonical_(old.values[spec.key], spec.options) : old.values[spec.key]) : spec.def;
     push([spec.label, value, spec.help || '', spec.key], 'setting', spec.options ? spec : null);
   });
 
@@ -318,8 +328,7 @@ function lhBuildSettingsSheet_() {
     const r = i + 1;
     if (spec === 'prize') {
       const rule = SpreadsheetApp.newDataValidation()
-        .requireValueInList(['Champion', 'Runner-up', 'Third place', 'Most points (regular season)', 'Most points (all season)',
-                             'Best regular-season record', 'Last place'], true)
+        .requireValueInList(LH_PRIZE_RULE_NAMES, true)
         .setAllowInvalid(true).setHelpText('Pick a rule, or type a team name.').build();
       sh.getRange(r, 3).setDataValidation(rule);
       return;

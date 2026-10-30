@@ -4,7 +4,7 @@
  * @OnlyCurrentDoc  League Hub only needs the spreadsheet it's in, so Google asks for that access only.
  */
 
-const LH_VERSION = '1.0.0';
+const LH_VERSION = '1.0.1';
 
 function lhStr_(v) {
   return String(v == null ? '' : v).replace(/ /g, ' ').trim();

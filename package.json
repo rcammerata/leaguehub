@@ -1,6 +1,6 @@
 {
   "name": "league-hub",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A website for your ESPN fantasy football league, run from a Google Sheet.",
   "private": true,
   "license": "MIT",

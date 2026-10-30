@@ -1,7 +1,7 @@
 /**
  * League Hub: Commissioner Tools (the website's Commissioner page).
  *
- * Turned on by setting a passcode from the spreadsheet (League Hub → Commissioner passcode). Only a salted
+ * Turned on by setting a passcode from the spreadsheet (League Hub → Commissioner Passcode). Only a salted
  * SHA-256 fingerprint of the passcode is stored. 10 wrong tries lock the tools for 15 minutes.
  * With the passcode the website can: record a payment (adds a row to the Payments tab), update the ESPN cookies
  * (tested with ESPN before they're saved) and start an update right away.
@@ -19,7 +19,7 @@ function lhCommish(req) {
 function lhCommishHandle_(req) {
   const stored = lhProps_().getProperty('LH_PASS');
   if (!stored) {
-    return { ok: false, noPass: true, error: 'Commissioner Tools are off. To turn them on, open the spreadsheet and click League Hub → Commissioner passcode.' };
+    return { ok: false, noPass: true, error: 'Commissioner Tools are off. To turn them on, open the spreadsheet and click League Hub → Commissioner Passcode.' };
   }
   const cache = lhCache_();
   const fails = Number(cache.get('LH_FAILS')) || 0;

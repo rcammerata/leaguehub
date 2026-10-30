@@ -1,8 +1,8 @@
 /**
  * League Hub: keeping the website's data up to date.
  *
- * A timer (installed by Set up) runs refreshLeague every few minutes. Each run decides whether an update is due:
- *   NFL games on (or kicking off soon)  every "Update every (minutes)" from the Settings tab
+ * A timer (installed by Set Up) runs refreshLeague every few minutes. Each run decides whether an update is due:
+ *   NFL games on (or kicking off soon)  every "Update Every (Minutes)" from the Settings tab
  *   during the season otherwise          every 30 minutes, and right after each kickoff
  *   draft day                             every 5 minutes around the draft
  *   otherwise                             every 2 hours
@@ -144,13 +144,13 @@ function lhMaybeAlert_(status) {
   if (!to) return;
   const fix = status.problem === 'auth'
     ? 'ESPN needs a login to read your league. If it\'s a private league, the ESPN cookies probably expired.\n\n' +
-      'To fix it: open the spreadsheet, click League Hub → ESPN cookies, and paste fresh espn_s2 and SWID values ' +
+      'To fix it: open the spreadsheet, click League Hub → ESPN Cookies, and paste fresh espn_s2 and SWID values ' +
       '(or use Commissioner Tools on the website).'
-    : 'ESPN says there\'s no league with the ID on your Settings tab. Check "ESPN league ID or link" on the Settings tab.';
+    : 'ESPN says there\'s no league with the ID on your Settings tab. Check "ESPN League ID or Link" on the Settings tab.';
   try {
     MailApp.sendEmail(to, 'League Hub: your league website can\'t update', fix +
       '\n\nThe website keeps showing the last scores it had until this is fixed.\n\n(League Hub sends at most one of these a day. ' +
-      'You can turn them off on the Settings tab: "Email me when something breaks".)');
+      'You can turn them off on the Settings tab: "Email Me When Something Breaks".)');
     props.setProperty('LH_ALERT_DAY', today);
   } catch (e) { lhLog_('Alert email failed', e); }
 }

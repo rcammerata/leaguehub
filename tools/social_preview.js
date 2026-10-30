@@ -30,8 +30,8 @@ p{font-size:31px;line-height:1.28;color:#c3cfdb;margin:38px 0 0;font-weight:500}
 </style></head><body>
 <div class="left"><div class="brand">${logo}<h1>League Hub</h1></div>
 <p>A website for your ESPN fantasy football league, run from a Google Sheet.</p>
-<div class="chips"><span class="chip">Live scores</span><span class="chip">Standings</span><span class="chip">Playoffs</span><span class="chip">Dues and prizes</span><span class="chip">League history</span></div></div>
-<div class="foot">Free · No server · No code</div>
+<div class="chips"><span class="chip">Live Scores</span><span class="chip">Standings</span><span class="chip">Playoffs</span><span class="chip">Dues &amp; Prizes</span><span class="chip">League History</span></div></div>
+<div class="foot">Free · No Server · No Code</div>
 <div class="phone p1"><img src="${dataUrl('phone-week.png')}"></div>
 <div class="phone p2"><img src="${dataUrl('phone-matchup.png')}"></div>
 </body></html>`;

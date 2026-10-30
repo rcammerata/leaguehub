@@ -1,5 +1,5 @@
 /**
- * League Hub 1.0.0: a website for an ESPN fantasy football league, run from a Google Sheet.
+ * League Hub 1.0.1: a website for an ESPN fantasy football league, run from a Google Sheet.
  *
  * To install or update League Hub, paste this whole file over Code.gs (Extensions → Apps Script).
  * Your settings live on the spreadsheet's Settings tab, so updating never loses them.
@@ -16,7 +16,7 @@
  * @OnlyCurrentDoc  League Hub only needs the spreadsheet it's in, so Google asks for that access only.
  */
 
-const LH_VERSION = '1.0.0';
+const LH_VERSION = '1.0.1';
 
 function lhStr_(v) {
   return String(v == null ? '' : v).replace(/ /g, ' ').trim();
@@ -127,7 +127,7 @@ function lhPlural_(n, one, many) {
  *
  * Every setting lives on the "Settings" tab of the spreadsheet: column A is the name, column B the value
  * you edit, column C explains it, and hidden column D holds the setting's key (so renaming column A is
- * harmless). Running League Hub → Set up again rebuilds the tab and keeps every value you entered.
+ * harmless). Running League Hub → Set Up again rebuilds the tab and keeps every value you entered.
  *
  * Secrets never go on the sheet: ESPN cookies and the commissioner passcode are kept in Script Properties.
  */
@@ -159,60 +159,70 @@ const LH_PRIZE_RULES = {
 };
 
 const LH_SETTINGS = [
-  { section: 'ESPN league' },
-  { key: 'league_id', label: 'ESPN league ID or link', def: '',
-    help: 'Paste your league\'s ESPN web address, or just the number after leagueId=. Private leagues also need ESPN cookies (League Hub menu → ESPN cookies).' },
+  { section: 'ESPN League' },
+  { key: 'league_id', label: 'ESPN League ID or Link', def: '',
+    help: 'Paste your league\'s ESPN web address, or just the number after leagueId=. Private leagues also need ESPN cookies (League Hub menu → ESPN Cookies).' },
   { key: 'season', label: 'Season', def: 'Auto',
     help: 'Auto follows the current season. Type a year (like 2025) to show that season instead.' },
 
   { section: 'Website' },
-  { key: 'league_name', label: 'League name', def: '', help: 'Leave blank to use the name on ESPN.' },
-  { key: 'accent', label: 'Accent color', def: 'Blue', options: ['Blue', 'Green', 'Red', 'Purple', 'Orange', 'Teal', 'Pink', 'Gold'], allowOther: true,
+  { key: 'league_name', label: 'League Name', def: '', help: 'Leave blank to use the name on ESPN.' },
+  { key: 'accent', label: 'Accent Color', def: 'Blue', options: ['Blue', 'Green', 'Red', 'Purple', 'Orange', 'Teal', 'Pink', 'Gold'], allowOther: true,
     help: 'The highlight color of the website. Pick one, or type a color code like #1e90ff.' },
-  { key: 'logo', label: 'Logo', def: 'Football', options: ['Football', 'Trophy', 'Goal post', 'First letter'],
-    help: 'The picture in the top corner of the website, on your accent color. First letter uses the first letter of the league name.' },
-  { key: 'manager_names', label: 'Manager names', def: 'First name + last initial',
-    options: ['First name + last initial', 'Full name', 'ESPN username', 'Hide'],
+  { key: 'logo', label: 'Logo', def: 'Football', options: ['Football', 'Trophy', 'Goal Post', 'First Letter'],
+    help: 'The picture in the top corner of the website, on your accent color. First Letter uses the first letter of the league name.' },
+  { key: 'manager_names', label: 'Manager Names', def: 'First Name + Last Initial',
+    options: ['First Name + Last Initial', 'Full Name', 'ESPN Username', 'Hide'],
     help: 'How managers are named on the website. Names come from ESPN.' },
-  { key: 'founded', label: 'Year the league started', def: '', help: 'Optional. Shown with the league history.' },
-  { key: 'rules', label: 'League rules', def: '',
+  { key: 'founded', label: 'Year the League Started', def: '', help: 'Optional. Shown with the league history.' },
+  { key: 'rules', label: 'League Rules', def: '',
     help: 'Optional. Shown on the League page. Put each rule on its own line (Ctrl+Enter or ⌘+Enter starts a new line in a cell).' },
-  { key: 'show_win_prob', label: 'Show win probability', def: 'Yes', options: ['Yes', 'No'], help: 'On each matchup page.' },
-  { key: 'show_bench', label: 'Show bench players', def: 'Yes', options: ['Yes', 'No'], help: 'On each matchup page.' },
-  { key: 'show_history', label: 'Show league history', def: 'Yes', options: ['Yes', 'No'],
+  { key: 'show_win_prob', label: 'Show Win Probability', def: 'Yes', options: ['Yes', 'No'], help: 'On each matchup page.' },
+  { key: 'show_bench', label: 'Show Bench Players', def: 'Yes', options: ['Yes', 'No'], help: 'On each matchup page.' },
+  { key: 'show_history', label: 'Show League History', def: 'Yes', options: ['Yes', 'No'],
     help: 'Past champions and top scorers, read from ESPN (seasons before 2018 need ESPN cookies).' },
 
   { section: 'Money' },
-  { key: 'money_page', label: 'Money page', def: 'No', options: ['Yes', 'No'],
+  { key: 'money_page', label: 'Money Page', def: 'No', options: ['Yes', 'No'],
     help: 'Yes adds a page with dues, fees, prizes and who owes what. Record payments on the Payments tab or in Commissioner Tools on the website.' },
-  { key: 'entry_fee', label: 'Entry fee per team', def: 0, money: true, help: 'What each team pays to join.' },
-  { key: 'keeper_fee', label: 'Keeper fees', def: '',
+  { key: 'entry_fee', label: 'Entry Fee per Team', def: 0, money: true, help: 'What each team pays to join.' },
+  { key: 'keeper_fee', label: 'Keeper Fees', def: '',
     help: 'Optional. One amount for every keeper (like 20), or amounts by the round the player went in last season\'s draft, like 1:50, 2:40, 3:30, K:50, UD:0 (K = kept last season too, UD = undrafted). Rounds you leave out are free.' },
-  { key: 'dues_when', label: 'Entry fee is due', def: 'Before the season', options: ['Before the season', 'At the end of the season'],
-    help: 'Before the season: teams pay the entry fee and keeper fees up front, and the rest (pickup and trade fees against prizes) is settled after the season. At the end of the season: everything is settled then.' },
-  { key: 'pickup_fee', label: 'Fee per player pickup', def: 0, money: true, help: 'Charged for each player a team adds (free agents and waiver claims). Settled after the season.' },
-  { key: 'free_pickups', label: 'Free pickups per team', def: 0, help: 'How many pickups each team gets before the pickup fee starts.' },
-  { key: 'trade_fee', label: 'Fee per trade', def: 0, money: true, help: 'Charged to each team in a trade. Settled after the season.' },
-  { key: 'weekly_prize', label: 'Weekly high score prize', def: 0, money: true, help: 'Paid to the top scorer each week. Ties split it.' },
-  { key: 'weekly_prize_weeks', label: 'Weekly prize weeks', def: 'Regular season', options: ['Regular season', 'Every week'],
-    help: 'Every week includes the playoff weeks (every team that played counts).' },
+  { key: 'dues_when', label: 'Entry Fee Is Due', def: 'Before the Season', options: ['Before the Season', 'At the End of the Season'],
+    help: 'Before the Season: teams pay the entry fee and keeper fees up front, and the rest (pickup and trade fees against prizes) is settled after the season. At the End of the Season: everything is settled then.' },
+  { key: 'pickup_fee', label: 'Fee per Player Pickup', def: 0, money: true, help: 'Charged for each player a team adds (free agents and waiver claims). Settled after the season.' },
+  { key: 'free_pickups', label: 'Free Pickups per Team', def: 0, help: 'How many pickups each team gets before the pickup fee starts.' },
+  { key: 'trade_fee', label: 'Fee per Trade', def: 0, money: true, help: 'Charged to each team in a trade. Settled after the season.' },
+  { key: 'weekly_prize', label: 'Weekly High Score Prize', def: 0, money: true, help: 'Paid to the top scorer each week. Ties split it.' },
+  { key: 'weekly_prize_weeks', label: 'Weekly Prize Weeks', def: 'Regular Season', options: ['Regular Season', 'Every Week'],
+    help: 'Every Week includes the playoff weeks (every team that played counts).' },
 
   { prizes: true },
 
   { section: 'Updates' },
-  { key: 'refresh_minutes', label: 'Update every (minutes)', def: '5', options: ['5', '10', '15', '30'],
+  { key: 'refresh_minutes', label: 'Update Every (Minutes)', def: '5', options: ['5', '10', '15', '30'],
     help: 'How often scores update while NFL games are on. When no games are on, updates are less frequent.' },
-  { key: 'alert_email', label: 'Email me when something breaks', def: 'Yes', options: ['Yes', 'No'],
+  { key: 'alert_email', label: 'Email Me When Something Breaks', def: 'Yes', options: ['Yes', 'No'],
     help: 'At most one email a day, for example when ESPN cookies expire. It goes to the Google account that owns this sheet.' }
 ];
 
 const LH_DEFAULT_PRIZES = [
   ['Champion', '50%', 'Champion'],
-  ['Runner-up', '25%', 'Runner-up'],
-  ['Third place', '10%', 'Third place'],
-  ['Most points', '15%', 'Most points (regular season)']
+  ['Runner-Up', '25%', 'Runner-Up'],
+  ['Third Place', '10%', 'Third Place'],
+  ['Most Points', '15%', 'Most Points (Regular Season)']
 ];
 const LH_PRIZE_ROWS = 8;
+// The Winner dropdown: every prize rule, as it's written on the sheet
+const LH_PRIZE_RULE_NAMES = ['Champion', 'Runner-Up', 'Third Place', 'Most Points (Regular Season)', 'Most Points (All Season)',
+                             'Best Regular-Season Record', 'Last Place'];
+
+// A dropdown value in the current wording (older sheets used sentence case, like "Goal Post"); anything else as is
+function lhCanonical_(value, choices) {
+  const k = lhKey_(value);
+  for (let i = 0; i < choices.length; i++) if (lhKey_(choices[i]) === k) return choices[i];
+  return value;
+}
 
 // ===================== Reading =====================
 
@@ -275,7 +285,7 @@ function lhSettings_() {
   if (!accent) {
     const hex = lhStr_(val('accent'));
     if (/^#?[0-9a-f]{6}$/i.test(hex)) accent = hex.charAt(0) === '#' ? hex : '#' + hex;
-    else { accent = LH_ACCENTS.blue; problems.push('Accent color should be one of the listed colors or a code like #1e90ff.'); }
+    else { accent = LH_ACCENTS.blue; problems.push(lhLabel_('accent') + ' should be one of the listed colors or a code like #1e90ff.'); }
   }
   const logo = LH_LOGOS[lhKey_(val('logo'))] || 'football';
 
@@ -376,7 +386,7 @@ function lhParseKeeperFees_(v) {
   return { flat: 0, byTag: byTag };
 }
 
-// ===================== Writing (Set up) =====================
+// ===================== Writing (Set Up) =====================
 
 // Builds (or rebuilds) the Settings tab, keeping every value already entered
 function lhBuildSettingsSheet_() {
@@ -390,8 +400,8 @@ function lhBuildSettingsSheet_() {
   const validations = [];
   const push = (r, style, validation) => { rows.push(r); styles.push(style); validations.push(validation || null); };
 
-  push(['League Hub settings', '', '', '#title'], 'title');
-  push(['Change the values in column B. The website picks up changes within a few minutes (or use League Hub → Update now).', '', '', '#note'], 'note');
+  push(['League Hub Settings', '', '', '#title'], 'title');
+  push(['Change the values in column B. The website picks up changes within a few minutes (or use League Hub → Update Now).', '', '', '#note'], 'note');
 
   LH_SETTINGS.forEach(spec => {
     if (spec.section) { push(['', '', '', '#blank'], 'blank'); push([spec.section, '', '', '#section'], 'section'); return; }
@@ -405,12 +415,12 @@ function lhBuildSettingsSheet_() {
       const list = old.missing ? LH_DEFAULT_PRIZES : old.prizes.filter(p => lhStr_(p[0]) || lhStr_(p[1]) || lhStr_(p[2]));
       for (let i = 0; i < Math.max(LH_PRIZE_ROWS, list.length); i++) {
         const p = list[i] || ['', '', ''];
-        push([p[0], p[1], p[2], '#prize'], 'prize', 'prize');
+        push([lhCanonical_(p[0], LH_DEFAULT_PRIZES.map(x => x[0])), p[1], lhCanonical_(p[2], LH_PRIZE_RULE_NAMES), '#prize'], 'prize', 'prize');
       }
       return;
     }
     const has = Object.prototype.hasOwnProperty.call(old.values, spec.key);
-    const value = has ? old.values[spec.key] : spec.def;
+    const value = has ? (spec.options ? lhCanonical_(old.values[spec.key], spec.options) : old.values[spec.key]) : spec.def;
     push([spec.label, value, spec.help || '', spec.key], 'setting', spec.options ? spec : null);
   });
 
@@ -442,8 +452,7 @@ function lhBuildSettingsSheet_() {
     const r = i + 1;
     if (spec === 'prize') {
       const rule = SpreadsheetApp.newDataValidation()
-        .requireValueInList(['Champion', 'Runner-up', 'Third place', 'Most points (regular season)', 'Most points (all season)',
-                             'Best regular-season record', 'Last place'], true)
+        .requireValueInList(LH_PRIZE_RULE_NAMES, true)
         .setAllowInvalid(true).setHelpText('Pick a rule, or type a team name.').build();
       sh.getRange(r, 3).setDataValidation(rule);
       return;
@@ -503,7 +512,7 @@ function lhSetPaymentTeams_(sh, teamNames) {
  *
  * ESPN's fantasy data comes from its (unofficial, undocumented) API at lm-api-reads.fantasy.espn.com. Public
  * leagues can be read by anyone. Private leagues need two cookies from a logged-in ESPN account, espn_s2 and
- * SWID (League Hub menu → ESPN cookies). They're kept in Script Properties, never on the sheet or the website.
+ * SWID (League Hub menu → ESPN Cookies). They're kept in Script Properties, never on the sheet or the website.
  *
  * Requests used (each one is a single call):
  *   League      ?view=mSettings&view=mTeam&view=mStandings&view=mMatchupScore   (every update)
@@ -616,7 +625,7 @@ function lhResolveSeason_(settings) {
 }
 
 /**
- * Checks the league ID (and cookies, if any) with one request. Used by Set up and by Commissioner Tools.
+ * Checks the league ID (and cookies, if any) with one request. Used by Set Up and by Commissioner Tools.
  * Returns { ok, message, name, season, teams }.
  */
 function lhEspnTest_(leagueId, cookies) {
@@ -634,7 +643,7 @@ function lhEspnTest_(leagueId, cookies) {
   if (lastProblem === 'auth') {
     return { ok: false, problem: 'auth', message: cookies
       ? 'ESPN didn\'t accept these cookies. Copy espn_s2 and SWID again (while logged in to ESPN) and retry.'
-      : 'This league is private. Add your ESPN cookies: League Hub menu → ESPN cookies.' };
+      : 'This league is private. Add your ESPN cookies: League Hub menu → ESPN Cookies.' };
   }
   if (lastProblem === 'notFound') return { ok: false, problem: 'notFound', message: 'ESPN has no league with ID ' + leagueId + '. Check the league ID.' };
   return { ok: false, problem: 'other', message: 'Couldn\'t reach ESPN right now. Try again in a few minutes.' };
@@ -645,7 +654,7 @@ function lhEspnTeamName_(t) {
   return lhStr_(t.name || [t.location, t.nickname].filter(Boolean).join(' ')) || ('Team ' + t.id);
 }
 
-// Manager name for a team, styled by the "Manager names" setting
+// Manager name for a team, styled by the "Manager Names" setting
 function lhManagerName_(team, membersById, style) {
   if (style === 'hide') return '';
   const names = (team.owners || []).map(id => {
@@ -1888,8 +1897,8 @@ function lhHistoryForFeed_(s, style) {
 /**
  * League Hub: keeping the website's data up to date.
  *
- * A timer (installed by Set up) runs refreshLeague every few minutes. Each run decides whether an update is due:
- *   NFL games on (or kicking off soon)  every "Update every (minutes)" from the Settings tab
+ * A timer (installed by Set Up) runs refreshLeague every few minutes. Each run decides whether an update is due:
+ *   NFL games on (or kicking off soon)  every "Update Every (Minutes)" from the Settings tab
  *   during the season otherwise          every 30 minutes, and right after each kickoff
  *   draft day                             every 5 minutes around the draft
  *   otherwise                             every 2 hours
@@ -2031,13 +2040,13 @@ function lhMaybeAlert_(status) {
   if (!to) return;
   const fix = status.problem === 'auth'
     ? 'ESPN needs a login to read your league. If it\'s a private league, the ESPN cookies probably expired.\n\n' +
-      'To fix it: open the spreadsheet, click League Hub → ESPN cookies, and paste fresh espn_s2 and SWID values ' +
+      'To fix it: open the spreadsheet, click League Hub → ESPN Cookies, and paste fresh espn_s2 and SWID values ' +
       '(or use Commissioner Tools on the website).'
-    : 'ESPN says there\'s no league with the ID on your Settings tab. Check "ESPN league ID or link" on the Settings tab.';
+    : 'ESPN says there\'s no league with the ID on your Settings tab. Check "ESPN League ID or Link" on the Settings tab.';
   try {
     MailApp.sendEmail(to, 'League Hub: your league website can\'t update', fix +
       '\n\nThe website keeps showing the last scores it had until this is fixed.\n\n(League Hub sends at most one of these a day. ' +
-      'You can turn them off on the Settings tab: "Email me when something breaks".)');
+      'You can turn them off on the Settings tab: "Email Me When Something Breaks".)');
     props.setProperty('LH_ALERT_DAY', today);
   } catch (e) { lhLog_('Alert email failed', e); }
 }
@@ -2122,7 +2131,7 @@ function doPost(e) {
 /**
  * League Hub: Commissioner Tools (the website's Commissioner page).
  *
- * Turned on by setting a passcode from the spreadsheet (League Hub → Commissioner passcode). Only a salted
+ * Turned on by setting a passcode from the spreadsheet (League Hub → Commissioner Passcode). Only a salted
  * SHA-256 fingerprint of the passcode is stored. 10 wrong tries lock the tools for 15 minutes.
  * With the passcode the website can: record a payment (adds a row to the Payments tab), update the ESPN cookies
  * (tested with ESPN before they're saved) and start an update right away.
@@ -2140,7 +2149,7 @@ function lhCommish(req) {
 function lhCommishHandle_(req) {
   const stored = lhProps_().getProperty('LH_PASS');
   if (!stored) {
-    return { ok: false, noPass: true, error: 'Commissioner Tools are off. To turn them on, open the spreadsheet and click League Hub → Commissioner passcode.' };
+    return { ok: false, noPass: true, error: 'Commissioner Tools are off. To turn them on, open the spreadsheet and click League Hub → Commissioner Passcode.' };
   }
   const cache = lhCache_();
   const fails = Number(cache.get('LH_FAILS')) || 0;
@@ -2257,11 +2266,11 @@ function lhSaveCookies_(swidIn, s2In) {
 /**
  * League Hub: the "League Hub" menu in the spreadsheet.
  *
- *   Set up (start here)          creates the Settings and Payments tabs, connects to ESPN, starts automatic updates
- *   Update now                   gets fresh data from ESPN right away
+ *   Set Up (Start Here)          creates the Settings and Payments tabs, connects to ESPN, starts automatic updates
+ *   Update Now                   gets fresh data from ESPN right away
  *   ESPN cookies                 for private leagues (tested with ESPN before they're saved)
- *   Commissioner passcode        turns on Commissioner Tools on the website
- *   Status and website address   when the data last updated, and the website's address
+ *   Commissioner Passcode        turns on Commissioner Tools on the website
+ *   Status & Website Address   when the data last updated, and the website's address
  *   Pause / resume updates
  *   Help
  */
@@ -2280,14 +2289,14 @@ function onOpen() {
   let paused = false;
   try { paused = lhProps_().getProperty('LH_PAUSED') === '1'; } catch (_) {}   // not readable before the first authorization
   SpreadsheetApp.getUi().createMenu('League Hub')
-    .addItem('Set up (start here)', 'leagueHubSetup')
-    .addItem('Update now', 'leagueHubUpdateNow')
+    .addItem('Set Up (Start Here)', 'leagueHubSetup')
+    .addItem('Update Now', 'leagueHubUpdateNow')
     .addSeparator()
-    .addItem('ESPN cookies (private leagues)', 'leagueHubCookies')
-    .addItem('Commissioner passcode', 'leagueHubPasscode')
+    .addItem('ESPN Cookies (Private Leagues)', 'leagueHubCookies')
+    .addItem('Commissioner Passcode', 'leagueHubPasscode')
     .addSeparator()
-    .addItem('Status and website address', 'leagueHubStatus')
-    .addItem(paused ? 'Resume automatic updates' : 'Pause automatic updates', paused ? 'leagueHubResume' : 'leagueHubPause')
+    .addItem('Status & Website Address', 'leagueHubStatus')
+    .addItem(paused ? 'Resume Automatic Updates' : 'Pause Automatic Updates', paused ? 'leagueHubResume' : 'leagueHubPause')
     .addItem('Help', 'leagueHubHelp')
     .addToUi();
 }
@@ -2309,18 +2318,18 @@ function leagueHubSetup() {
   let settings = lhSettings_();
 
   if (!settings.leagueId) {
-    const r = ui.prompt('League Hub setup',
+    const r = ui.prompt('League Hub Setup',
       'Paste your ESPN league\'s web address (or just its league ID).\n\n' +
       'On ESPN, open your league\'s page and copy the address from the browser. It contains leagueId=...',
       ui.ButtonSet.OK_CANCEL);
     if (r.getSelectedButton() !== ui.Button.OK) {
-      ui.alert('Setup paused', 'The Settings tab is ready. When you have the league\'s address, run League Hub → Set up again.', ui.ButtonSet.OK);
+      ui.alert('Setup Paused', 'The Settings tab is ready. When you have the league\'s address, run League Hub → Set Up again.', ui.ButtonSet.OK);
       return;
     }
     const id = lhParseLeagueId_(r.getResponseText());
     if (!id) {
-      ui.alert('That doesn\'t look like an ESPN league address', 'It should look like https://fantasy.espn.com/football/league?leagueId=12345678. ' +
-        'Paste it into "ESPN league ID or link" on the Settings tab, then run League Hub → Set up again.', ui.ButtonSet.OK);
+      ui.alert('That Doesn\'t Look Like an ESPN League Address', 'It should look like https://fantasy.espn.com/football/league?leagueId=12345678. ' +
+        'Paste it into "ESPN League ID or Link" on the Settings tab, then run League Hub → Set Up again.', ui.ButtonSet.OK);
       return;
     }
     lhSetSetting_('league_id', id);
@@ -2330,7 +2339,7 @@ function leagueHubSetup() {
   ss.toast('Checking your league on ESPN…', 'League Hub', 10);
   const test = lhEspnTest_(settings.leagueId);
   if (!test.ok && test.problem === 'auth') {
-    const ans = ui.alert('Your league is private',
+    const ans = ui.alert('Your League Is Private',
       'ESPN only shares private leagues with members, so League Hub needs two cookies from your ESPN login (espn_s2 and SWID). ' +
       'They\'re stored privately in this spreadsheet\'s script, never on the sheet or the website.\n\nAdd them now?',
       ui.ButtonSet.YES_NO);
@@ -2338,7 +2347,7 @@ function leagueHubSetup() {
     return;
   }
   if (!test.ok) {
-    ui.alert('Couldn\'t connect', test.message, ui.ButtonSet.OK);
+    ui.alert('Couldn\'t Connect', test.message, ui.ButtonSet.OK);
     return;
   }
   lhFinishSetup_();
@@ -2360,19 +2369,19 @@ function lhShowNextSteps_(found) {
     '<div style="font:14px/1.5 Arial,sans-serif;color:#1f2933">' +
     '<p style="margin:0 0 10px"><b>✓ Connected.</b> ' + lhHtml_(found || '') + ' Scores update automatically from now on.</p>' +
     (url
-      ? '<p style="margin:0 0 6px"><b>Your league\'s website:</b></p><p style="margin:0 0 12px"><a href="' + lhHtml_(url) + '" target="_blank">' + lhHtml_(url) + '</a></p>' +
+      ? '<p style="margin:0 0 6px"><b>Your League\'s Website:</b></p><p style="margin:0 0 12px"><a href="' + lhHtml_(url) + '" target="_blank">' + lhHtml_(url) + '</a></p>' +
         '<p style="margin:0 0 12px;color:#5f6b76">After changing the script (for example when you install an update), publish a new version: ' +
         'Deploy → Manage deployments → pencil icon → Version: New version → Deploy. The address stays the same.</p>'
-      : '<p style="margin:0 0 6px"><b>Last step: publish the website</b></p><ol style="margin:0 0 12px;padding-left:20px">' +
+      : '<p style="margin:0 0 6px"><b>Last Step: Publish the Website</b></p><ol style="margin:0 0 12px;padding-left:20px">' +
         '<li>Click <b>Extensions → Apps Script</b>.</li>' +
         '<li>Click <b>Deploy</b> (top right) → <b>New deployment</b>.</li>' +
         '<li>Click the gear icon next to "Select type" → <b>Web app</b>.</li>' +
         '<li>Set <b>Execute as</b> to <b>Me</b> and <b>Who has access</b> to <b>Anyone</b>.</li>' +
         '<li>Click <b>Deploy</b> (allow access if Google asks), then copy the <b>Web app</b> address. That\'s your league\'s website.</li></ol>' +
         '<p style="margin:0 0 12px;color:#5f6b76">Already published? The address is under Deploy → Manage deployments.</p>') +
-    '<p style="margin:0;color:#5f6b76">Optional: League Hub → Commissioner passcode turns on Commissioner Tools on the website ' +
+    '<p style="margin:0;color:#5f6b76">Optional: League Hub → Commissioner Passcode turns on Commissioner Tools on the website ' +
     '(record payments, update ESPN cookies). Everything else is on the Settings tab.</p></div>';
-  SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(520).setHeight(url ? 300 : 380), 'League Hub is set up');
+  SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(520).setHeight(url ? 300 : 380), 'League Hub Is Set Up');
 }
 
 function leagueHubUpdateNow() {
@@ -2402,7 +2411,7 @@ function lhShowCookiesDialog_(duringSetup) {
     '<p style="margin:0 0 8px">On a computer, open your league on <b>fantasy.espn.com</b> and log in. Then open the browser\'s developer tools ' +
     '(Chrome: View → Developer → Developer Tools; Safari: Develop → Show Web Inspector), go to <b>Application</b> (Chrome) or <b>Storage</b> (Safari) ' +
     '→ <b>Cookies</b> → <b>https://fantasy.espn.com</b>, and copy these two values:</p>' +
-    '<label style="display:block;font-weight:bold;margin:10px 0 4px">SWID (with the curly brackets)</label>' +
+    '<label style="display:block;font-weight:bold;margin:10px 0 4px">SWID (With the Curly Brackets)</label>' +
     '<input id="swid" style="width:100%;box-sizing:border-box;padding:6px;font:13px monospace" placeholder="{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}">' +
     '<label style="display:block;font-weight:bold;margin:10px 0 4px">espn_s2</label>' +
     '<textarea id="s2" style="width:100%;box-sizing:border-box;padding:6px;font:12px monospace;height:84px" placeholder="AEB…"></textarea>' +
@@ -2415,28 +2424,28 @@ function lhShowCookiesDialog_(duringSetup) {
     'if(r.ok)setTimeout(function(){google.script.host.close();},2500);}).withFailureHandler(function(e){m.textContent=String(e.message||e);b.disabled=false;})' +
     '.leagueHubSaveCookies(document.getElementById("swid").value,document.getElementById("s2").value,' + (duringSetup ? 'true' : 'false') + ',"' + key + '");};' +
     '</script></div>';
-  SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(520).setHeight(420), 'ESPN cookies (private leagues)');
+  SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(520).setHeight(420), 'ESPN Cookies (Private Leagues)');
 }
 
 // Called by the cookies window
 function leagueHubSaveCookies(swid, s2, duringSetup, key) {
   const want = lhCache_().get('LH_COOKIE_KEY');
-  if (!want || key !== want) return JSON.stringify({ ok: false, error: 'This window has expired. Close it and open League Hub → ESPN cookies again.' });
+  if (!want || key !== want) return JSON.stringify({ ok: false, error: 'This window has expired. Close it and open League Hub → ESPN Cookies again.' });
   const res = lhSaveCookies_(swid, s2);
   if (res.ok) {
     const st = lhFinishSetup_();
-    if (duringSetup) res.message += ' Setup is finished. Run League Hub → Status and website address for the next step.';
+    if (duringSetup) res.message += ' Setup is finished. Run League Hub → Status & Website Address for the next step.';
     else if (!st.ok) res.message += ' (The update after saving didn\'t work: ' + st.message + ')';
   }
   return JSON.stringify(res);
 }
 
-// ===================== Commissioner passcode =====================
+// ===================== Commissioner Passcode =====================
 
 function leagueHubPasscode() {
   const ui = lhUiOnly_();
   const has = !!lhProps_().getProperty('LH_PASS');
-  const r1 = ui.prompt('Commissioner passcode',
+  const r1 = ui.prompt('Commissioner Passcode',
     (has ? 'Commissioner Tools are on. Type a new passcode to change it, or type OFF to turn the tools off.\n\n'
          : 'Pick a passcode for Commissioner Tools on the website (record payments, update ESPN cookies, update now). ') +
     'Use at least 8 characters. Anyone with the passcode can use the tools, so share it only with co-commissioners.',
@@ -2449,11 +2458,11 @@ function leagueHubPasscode() {
     return;
   }
   if (pass.length < 8) { ui.alert('The passcode needs at least 8 characters. Nothing was changed.'); return; }
-  const r2 = ui.prompt('Commissioner passcode', 'Type the same passcode again.', ui.ButtonSet.OK_CANCEL);
+  const r2 = ui.prompt('Commissioner Passcode', 'Type the same passcode again.', ui.ButtonSet.OK_CANCEL);
   if (r2.getSelectedButton() !== ui.Button.OK) return;
   if (r2.getResponseText() !== pass) { ui.alert('The two passcodes didn\'t match. Nothing was changed.'); return; }
   lhSetPasscode_(pass);
-  ui.alert('Commissioner Tools are on', 'Open the website, scroll to the bottom and click "Commissioner Tools".', ui.ButtonSet.OK);
+  ui.alert('Commissioner Tools Are On', 'Open the website, scroll to the bottom and click "Commissioner Tools".', ui.ButtonSet.OK);
 }
 
 // ===================== Status =====================
@@ -2466,13 +2475,13 @@ function leagueHubStatus() {
   const props = lhProps_();
   const lines = [];
   if (st) {
-    lines.push('Last update: ' + Utilities.formatDate(new Date(st.at), tz, 'EEE MMM d, h:mm a') + ' — ' + (st.ok ? 'worked' : 'failed: ' + st.message));
+    lines.push('Last Update: ' + Utilities.formatDate(new Date(st.at), tz, 'EEE MMM d, h:mm a') + ' — ' + (st.ok ? 'worked' : 'failed: ' + st.message));
     if (st.league) lines.push('League: ' + st.league + (st.season ? ' (' + st.season + ', ' + st.teams + ' teams)' : ''));
   } else {
-    lines.push('No update yet. Run League Hub → Set up.');
+    lines.push('No update yet. Run League Hub → Set Up.');
   }
-  lines.push('Automatic updates: ' + (props.getProperty('LH_PAUSED') === '1' ? 'paused' : (props.getProperty('LH_TRIGGER_MINUTES') ? 'on' : 'not started (run Set up)')));
-  lines.push('ESPN cookies: ' + (lhEspnCookies_() ? 'saved' : 'none (only needed for private leagues)'));
+  lines.push('Automatic Updates: ' + (props.getProperty('LH_PAUSED') === '1' ? 'paused' : (props.getProperty('LH_TRIGGER_MINUTES') ? 'on' : 'not started (run Set Up)')));
+  lines.push('ESPN Cookies: ' + (lhEspnCookies_() ? 'saved' : 'none (only needed for private leagues)'));
   lines.push('Commissioner Tools: ' + (props.getProperty('LH_PASS') ? 'on' : 'off'));
   const problems = lhSettings_().problems.slice();
   const feed = lhJson_(lhCacheGetBig_(LH_FEED_KEY));
@@ -2482,7 +2491,7 @@ function leagueHubStatus() {
   if (problems.length) lines.push('', 'Check the Settings tab:', ...problems.map(p => '• ' + p));
   lines.push('', url ? 'Website: ' + url : 'Website: in Extensions → Apps Script, click Deploy → Manage deployments and copy the Web app URL. ' +
     'Not published yet? Deploy → New deployment → Web app (Execute as: Me, Who has access: Anyone) → Deploy.');
-  SpreadsheetApp.getUi().alert('League Hub status', lines.join('\n'), SpreadsheetApp.getUi().ButtonSet.OK);
+  SpreadsheetApp.getUi().alert('League Hub Status', lines.join('\n'), SpreadsheetApp.getUi().ButtonSet.OK);
 }
 
 function leagueHubPause() {
@@ -2503,15 +2512,15 @@ function leagueHubHelp() {
   lhUiOnly_();
   const html =
     '<div style="font:14px/1.5 Arial,sans-serif;color:#1f2933">' +
-    '<p style="margin:0 0 8px"><b>Change how the website looks or works:</b> edit column B of the Settings tab. Changes show up within a few minutes, or right away with League Hub → Update now.</p>' +
-    '<p style="margin:0 0 8px"><b>Record a payment:</b> add a row on the Payments tab (positive = the team paid, negative = the league paid the team), or use Commissioner Tools on the website.</p>' +
-    '<p style="margin:0 0 8px"><b>Website not updating?</b> League Hub → Status and website address shows the last update and what went wrong. ' +
-    'Private leagues: expired ESPN cookies are the usual cause (League Hub → ESPN cookies).</p>' +
-    '<p style="margin:0 0 8px"><b>Installed a new version of League Hub?</b> In Extensions → Apps Script: Deploy → Manage deployments → pencil icon → Version: New version → Deploy. ' +
-    'Then run League Hub → Set up once more (it keeps your settings).</p>' +
+    '<p style="margin:0 0 8px"><b>Change How the Website Looks or Works:</b> edit column B of the Settings tab. Changes show up within a few minutes, or right away with League Hub → Update Now.</p>' +
+    '<p style="margin:0 0 8px"><b>Record a Payment:</b> add a row on the Payments tab (positive = the team paid, negative = the league paid the team), or use Commissioner Tools on the website.</p>' +
+    '<p style="margin:0 0 8px"><b>Website Not Updating?</b> League Hub → Status & Website Address shows the last update and what went wrong. ' +
+    'Private leagues: expired ESPN cookies are the usual cause (League Hub → ESPN Cookies).</p>' +
+    '<p style="margin:0 0 8px"><b>Installed a New Version of League Hub?</b> In Extensions → Apps Script: Deploy → Manage deployments → pencil icon → Version: New version → Deploy. ' +
+    'Then run League Hub → Set Up once more (it keeps your settings).</p>' +
     (LH_PROJECT_URL ? '<p style="margin:0">Full guide: <a href="' + lhHtml_(LH_PROJECT_URL) + '" target="_blank">' + lhHtml_(LH_PROJECT_URL) + '</a></p>' : '') +
     '<p style="margin:8px 0 0;color:#5f6b76">League Hub ' + LH_VERSION + '. Not affiliated with ESPN.</p></div>';
-  SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(520).setHeight(360), 'League Hub help');
+  SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(520).setHeight(360), 'League Hub Help');
 }
 
 // ===================== Helpers =====================

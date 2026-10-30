@@ -76,8 +76,8 @@ function buildDemo(site) {
   const samples = [
     { id: 'week5', label: 'Week 5' },
     { id: 'week16', label: 'Playoffs' },
-    { id: 'complete', label: 'Season over' },
-    { id: 'predraft', label: 'Before the draft' }
+    { id: 'complete', label: 'Season Over' },
+    { id: 'predraft', label: 'Before the Draft' }
   ].map(x => {
     const feed = sampleFeed(x.id);
     feed.league.espnUrl = 'https://fantasy.espn.com/football/';   // the sample league isn't on ESPN

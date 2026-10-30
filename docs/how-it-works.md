@@ -1,19 +1,19 @@
-# How it works
+# How it Works
 
 **Contents**
 
-- [The big picture](#the-big-picture)
-- [When data updates](#when-data-updates)
-- [Where the data comes from](#where-the-data-comes-from)
-- [Live projections](#live-projections)
-- [Win probability](#win-probability)
-- [Tags on the website](#tags-on-the-website)
-- [Google's limits](#googles-limits)
+- [The Big Picture](#the-big-picture)
+- [When Data Updates](#when-data-updates)
+- [Where the Data Comes From](#where-the-data-comes-from)
+- [Live Projections](#live-projections)
+- [Win Probability](#win-probability)
+- [Tags on the Website](#tags-on-the-website)
+- [Google's Limits](#googles-limits)
 - [Security](#security)
 
 ---
 
-## The big picture
+## The Big Picture
 
 ```
  ESPN fantasy (your league)  ─┐
@@ -28,7 +28,7 @@
 
 Nothing runs on anyone else's computer or server. It's all in your Google account.
 
-## When data updates
+## When Data Updates
 
 | When | How often |
 | --- | --- |
@@ -37,14 +37,14 @@ Nothing runs on anyone else's computer or server. It's all in your Google accoun
 | Around your draft (3 hours before and after) | Every 5 minutes |
 | Off-season | Every 2 hours |
 | After you edit the Settings or Payments tab | At the timer's next run |
-| **League Hub → Update now** or Commissioner Tools → Update Now | Right away |
+| **League Hub → Update Now** or Commissioner Tools → Update Now | Right away |
 
-## Where the data comes from
+## Where the Data Comes From
 
-- **Your league**: ESPN's fantasy API, the same one ESPN's own website uses (`lm-api-reads.fantasy.espn.com`). ESPN doesn't document it, so League Hub reads it the way well-known open-source projects do (like [espn-api](https://github.com/cwendt94/espn-api)). Each update asks for the league (settings, teams, records, the schedule) and, during the season, this week's box scores. Injury tags come from the rosters (at most every 15 minutes). The draft, keepers, player names and past seasons are read once and saved.
-- **NFL games**: ESPN's public NFL scoreboard, for each player's opponent, kickoff time, score, quarter and game clock. Read at most once per update, and once an hour when no games are on.
+- **Your League**: ESPN's fantasy API, the same one ESPN's own website uses (`lm-api-reads.fantasy.espn.com`). ESPN doesn't document it, so League Hub reads it the way well-known open-source projects do (like [espn-api](https://github.com/cwendt94/espn-api)). Each update asks for the league (settings, teams, records, the schedule) and, during the season, this week's box scores. Injury tags come from the rosters (at most every 15 minutes). The draft, keepers, player names and past seasons are read once and saved.
+- **NFL Games**: ESPN's public NFL scoreboard, for each player's opponent, kickoff time, score, quarter and game clock. Read at most once per update, and once an hour when no games are on.
 
-## Live projections
+## Live Projections
 
 During games, each team's projection is League Hub's estimate of its final score, based on how much of each player's game is left.
 
@@ -56,8 +56,8 @@ For each starter:
 
 The player's live projection is:
 
-- **Offense and kickers: A + r × P**. The points so far, plus the projection for the part of the game that's left.
-- **Team defenses (D/ST): (1 − r) × A + r × P**. A defense's points can go down during a game (points allowed), so its projection slides from ESPN's projection toward its actual points as the game goes on.
+- **Offense & Kickers: A + r × P**. The points so far, plus the projection for the part of the game that's left.
+- **Team Defenses (D/ST): (1 − r) × A + r × P**. A defense's points can go down during a game (points allowed), so its projection slides from ESPN's projection toward its actual points as the game goes on.
 
 The team's projection is the sum of its starters' projections. It never goes below the team's actual score, except while one of its defenses is playing (since that defense can still lose points).
 
@@ -65,7 +65,7 @@ If the game clock is ever missing or out of date, League Hub counts down from ki
 
 For playoff rounds that last two weeks, the matchup's projection adds the points from the round's earlier week and estimates the later week from this week's projections.
 
-## Win probability
+## Win Probability
 
 The matchup page shows each team's chance to win (you can turn it off on the Settings tab). It's a simple model:
 
@@ -75,13 +75,13 @@ The matchup page shows each team's chance to win (you can turn it off on the Set
 
 It's meant for fun, not for betting.
 
-## Tags on the website
+## Tags on the Website
 
-- **Injury tags** (from ESPN): **Q** questionable, **D** doubtful, **O** out, **IR** injured reserve, **SSPD** suspended, **DTD** day-to-day.
-- **Keeper tags**: **R3** means the player was drafted in round 3 last season, **K** means the player was a keeper last season too, **UD** means nobody drafted the player last season.
+- **Injury Tags** (from ESPN): **Q** questionable, **D** doubtful, **O** out, **IR** injured reserve, **SSPD** suspended, **DTD** day-to-day.
+- **Keeper Tags**: **R3** means the player was drafted in round 3 last season, **K** means the player was a keeper last season too, **UD** means nobody drafted the player last season.
 - **Crown**: next to the reigning champion. This season's champion once it's decided, otherwise last season's.
 
-## Google's limits
+## Google's Limits
 
 Free Google accounts can use Apps Script within [daily quotas](https://developers.google.com/apps-script/guides/services/quotas). League Hub stays well inside them:
 
@@ -98,5 +98,5 @@ Google Workspace (work or school) accounts have higher limits.
 - **ESPN cookies** (private leagues) are kept in Script Properties, sent only to ESPN, and never put on the sheet or the website. Anyone with edit access to the spreadsheet could see them, so only share edit access with people you trust with your ESPN login.
 - **The commissioner passcode** is never stored. League Hub keeps a salted SHA-256 fingerprint of it and compares fingerprints. After 10 wrong passcodes, Commissioner Tools lock for 15 minutes.
 - **The website's data** only includes what league members can see on ESPN, with manager names shortened or hidden if you choose. It never includes cookies, the passcode, email addresses or the spreadsheet's address.
-- **The spreadsheet menu** (Set up, ESPN cookies, pause and so on) only works from the spreadsheet itself, never from the website, even though the website runs as your account.
-- **Spreadsheet access**: League Hub can only open the spreadsheet it's in (Apps Script's `@OnlyCurrentDoc`). Team names from ESPN that start with `=`, `+`, `-` or `@` are written to the sheet as plain text, never as formulas.
+- **The spreadsheet menu** (Set Up, ESPN Cookies, pause and so on) only works from the spreadsheet itself, never from the website, even though the website runs as your account.
+- **Spreadsheet Access**: League Hub can only open the spreadsheet it's in (Apps Script's `@OnlyCurrentDoc`). Team names from ESPN that start with `=`, `+`, `-` or `@` are written to the sheet as plain text, never as formulas.

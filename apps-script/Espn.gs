@@ -3,7 +3,7 @@
  *
  * ESPN's fantasy data comes from its (unofficial, undocumented) API at lm-api-reads.fantasy.espn.com. Public
  * leagues can be read by anyone. Private leagues need two cookies from a logged-in ESPN account, espn_s2 and
- * SWID (League Hub menu → ESPN cookies). They're kept in Script Properties, never on the sheet or the website.
+ * SWID (League Hub menu → ESPN Cookies). They're kept in Script Properties, never on the sheet or the website.
  *
  * Requests used (each one is a single call):
  *   League      ?view=mSettings&view=mTeam&view=mStandings&view=mMatchupScore   (every update)
@@ -116,7 +116,7 @@ function lhResolveSeason_(settings) {
 }
 
 /**
- * Checks the league ID (and cookies, if any) with one request. Used by Set up and by Commissioner Tools.
+ * Checks the league ID (and cookies, if any) with one request. Used by Set Up and by Commissioner Tools.
  * Returns { ok, message, name, season, teams }.
  */
 function lhEspnTest_(leagueId, cookies) {
@@ -134,7 +134,7 @@ function lhEspnTest_(leagueId, cookies) {
   if (lastProblem === 'auth') {
     return { ok: false, problem: 'auth', message: cookies
       ? 'ESPN didn\'t accept these cookies. Copy espn_s2 and SWID again (while logged in to ESPN) and retry.'
-      : 'This league is private. Add your ESPN cookies: League Hub menu → ESPN cookies.' };
+      : 'This league is private. Add your ESPN cookies: League Hub menu → ESPN Cookies.' };
   }
   if (lastProblem === 'notFound') return { ok: false, problem: 'notFound', message: 'ESPN has no league with ID ' + leagueId + '. Check the league ID.' };
   return { ok: false, problem: 'other', message: 'Couldn\'t reach ESPN right now. Try again in a few minutes.' };
@@ -145,7 +145,7 @@ function lhEspnTeamName_(t) {
   return lhStr_(t.name || [t.location, t.nickname].filter(Boolean).join(' ')) || ('Team ' + t.id);
 }
 
-// Manager name for a team, styled by the "Manager names" setting
+// Manager name for a team, styled by the "Manager Names" setting
 function lhManagerName_(team, membersById, style) {
   if (style === 'hide') return '';
   const names = (team.owners || []).map(id => {

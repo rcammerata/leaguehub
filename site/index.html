@@ -594,14 +594,14 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
     $('#wordmark').innerHTML = esc(name) + '<span>' + esc(L.season ? L.season + ' Season' : 'Fantasy Football') + '</span>';
     document.title = name;
     var label = f.ok ? (inDraft() ? 'Draft' : f.week ? (f.week.playoffs && f.week.round ? f.week.round : f.week.label) : phase() === 'complete' ? 'Final' : '') : '';
-    var when = !canLoad() ? (state.sample ? 'Sample league' : '') : f.generatedAt ? 'Updated ' + ago(f.generatedAt) : '';
+    var when = !canLoad() ? (state.sample ? 'Sample League' : '') : f.generatedAt ? 'Updated ' + ago(f.generatedAt) : '';
     $('#status').innerHTML = (label ? '<b>' + esc(label) + '</b>' : '') + '<small>' + esc(when) + '</small>';
 
     var msg = '';
     if (state.sample) {
       msg = 'A made-up league, to show what League Hub looks like. Show it: ' + SAMPLES.map(function (x) {
         return '<button type="button" class="chip" data-sample="' + esc(x.id) + '" aria-pressed="' + (x.id === state.sample) + '">' + esc(x.label) + '</button>';
-      }).join(' ') + ' <a class="get" href="' + PROJECT_URL + '" target="_blank" rel="noopener">Get League Hub for your league</a>';
+      }).join(' ') + ' <a class="get" href="' + PROJECT_URL + '" target="_blank" rel="noopener">Get League Hub for Your League</a>';
     }
     else if (state.failed) msg = 'Couldn’t reach the league data. Showing what was loaded before. <button type="button" data-act="retry">Try Again</button>';
     else if (f.ok && (f.stale || (f.status && f.status.ok === false))) {
@@ -624,7 +624,7 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
     $('#tabbar').innerHTML = navHtml(true);
     var every = num((f.refresh || {}).minutes);
     $('#footer').innerHTML = f.ok ? '<p>Scores come from ESPN' + (every && every <= 15 ? ' and update about every ' + every + ' minutes during games' : '') + '. ' +
-      '<a href="' + esc(L.espnUrl) + '" target="_blank" rel="noopener">Open the league on ESPN</a> · <a href="#commish">Commissioner Tools</a></p>' +
+      '<a href="' + esc(L.espnUrl) + '" target="_blank" rel="noopener">Open the League on ESPN</a> · <a href="#commish">Commissioner Tools</a></p>' +
       '<p>Made with <a href="' + PROJECT_URL + '" target="_blank" rel="noopener">League Hub</a>. Not affiliated with ESPN.</p>' :
       '<p>Made with <a href="' + PROJECT_URL + '" target="_blank" rel="noopener">League Hub</a>.</p>';
   }
@@ -685,7 +685,7 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
     var html = '<h1>' + esc(f.league.season) + ' Season</h1><p class="lede">The season is over</p>';
     if (champ) html += '<div class="card champ-card">' + TROPHY + '<div><div class="k">' + esc(f.league.season) + ' Champion</div><div class="v">' + esc(champ.name) + '</div>' +
       (champ.manager ? '<div class="mg">' + esc(champ.manager) + '</div>' : '') + '</div></div>';
-    var rows = [['Runner-up', fin.runnerUp], ['Third place', fin.third]].filter(function (x) { return x[1] != null; });
+    var rows = [['Runner-Up', fin.runnerUp], ['Third Place', fin.third]].filter(function (x) { return x[1] != null; });
     if (rows.length) html += '<div class="card" style="margin-top:12px"><table class="tbl"><tbody>' + rows.map(function (x) {
       return '<tr><td class="sub" style="width:120px">' + x[0] + '</td><td>' + who(team(x[1])) + '</td></tr>'; }).join('') + '</tbody></table></div>';
     html += '<div class="links"><a class="btn acc" href="#playoffs">Final Bracket</a><a class="btn" href="#standings">Standings</a><a class="btn" href="#scores">Scores</a></div>' +
@@ -693,11 +693,11 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
     return html;
   }
   function notReady(f) {
-    if (!canLoad()) return '<h1>Almost ready</h1><div class="card empty" style="margin-top:16px"><p>This page isn’t connected to a league yet. ' +
+    if (!canLoad()) return '<h1>Almost Ready</h1><div class="card empty" style="margin-top:16px"><p>This page isn’t connected to a league yet. ' +
       'Commissioner: paste your Apps Script web app address into LEAGUE_HUB_FEED_URL at the top of this file.</p></div>';
     var title = f.setup ? 'Almost ready' : 'Scores aren’t available right now';
-    var body = f.setup ? 'This league website isn’t connected to an ESPN league yet. Commissioner: open the spreadsheet and click League Hub → Set up.'
-      : f.problem === 'auth' ? 'ESPN needs a login to read this league. Commissioner: in the spreadsheet, click League Hub → ESPN cookies.'
+    var body = f.setup ? 'This league website isn’t connected to an ESPN league yet. Commissioner: open the spreadsheet and click League Hub → Set Up.'
+      : f.problem === 'auth' ? 'ESPN needs a login to read this league. Commissioner: in the spreadsheet, click League Hub → ESPN Cookies.'
       : esc(f.error || 'ESPN isn’t answering. This page will try again in a few minutes.');
     return '<h1>' + title + '</h1><div class="card empty" style="margin-top:16px"><p>' + body + '</p></div>';
   }
@@ -942,7 +942,7 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
         '<div class="mh-score">' + pts(score) + '</div><div class="note">' + note(score, proj, done, res) + '</div></div>';
     };
     var html = back + '<div class="card mh" style="--mc:' + rail + '"><div class="mh-grid">' + head(A, m.sa, m.pa, m.da, r.a, 'L') +
-      (B ? head(B, m.sb, m.pb, m.db, r.b, 'R') : '<div class="mh-side R"><div class="tn">Bye week</div></div>') + '</div>';
+      (B ? head(B, m.sb, m.pb, m.db, r.b, 'R') : '<div class="mh-side R"><div class="tn">Bye Week</div></div>') + '</div>';
     var DA = f.detail && f.detail.teams[m.a], DB = B && f.detail && f.detail.teams[m.b];
     if (B && DA && DB && (f.options || {}).winProb !== false) {
       var pa = Math.round(winProb(m, DA, DB) * 100);
@@ -1066,8 +1066,8 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
         var A = sideView(g.a), B = sideView(g.b), w = g.w;
         if (w === 'a' || w === 'b') {
           var W = w === 'a' ? A : B, L = w === 'a' ? B : A;
-          if (g.kind === 'final') { status[W.id] = { label: 'Champion' }; status[L.id] = { label: 'Runner-up', out: true }; }
-          else if (g.kind === 'third') { status[W.id] = { label: 'Third place', out: true }; status[L.id] = { label: 'Fourth place', out: true }; }
+          if (g.kind === 'final') { status[W.id] = { label: 'Champion' }; status[L.id] = { label: 'Runner-Up', out: true }; }
+          else if (g.kind === 'third') { status[W.id] = { label: 'Third Place', out: true }; status[L.id] = { label: 'Fourth Place', out: true }; }
           else status[L.id] = { label: 'Out in the ' + r.name, out: true };
         }
         var row = function (S, isWin, isLose) {
@@ -1110,7 +1110,7 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
     var duesTotal = sum('dues'), feesTotal = sum('fees'), keepers = sum('keeperFees') > 0;
     var html = '<h1>Money</h1><p class="lede">' + (upFront ? 'Dues before the season, then everyone settles up after it' : 'Everything is settled after the season') + '</p>' +
       '<div class="card pot"><div class="sub">Total Pot</div><div class="big">' + money(M.pot) + '</div><div class="parts">' +
-      '<span>' + (keepers ? 'Entry and Keeper Fees' : 'Entry Fees') + ' <b>' + money(duesTotal) + '</b></span>' + (feesTotal ? '<span>Pickup and Trade Fees <b>' + money(feesTotal) + '</b></span>' : '') +
+      '<span>' + (keepers ? 'Entry &amp; Keeper Fees' : 'Entry Fees') + ' <b>' + money(duesTotal) + '</b></span>' + (feesTotal ? '<span>Pickup &amp; Trade Fees <b>' + money(feesTotal) + '</b></span>' : '') +
       '<span>Paid In <b>' + money(M.collected) + '</b></span><span>Paid Out <b>' + money(M.paidOut) + '</b></span></div></div>';
 
     // Dues: who still has to pay up front (after the season, unpaid dues are part of the settle-up)
@@ -1148,10 +1148,10 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
     }
 
     html += '<h2>Prizes</h2><div class="card prizes">';
-    if (M.weekly && M.weekly.prize) html += '<div class="place"><span class="nm">Weekly high score</span><span class="amt">' + money(M.weekly.prize) + '</span><span class="who">Each ' +
+    if (M.weekly && M.weekly.prize) html += '<div class="place"><span class="nm">Weekly High Score</span><span class="amt">' + money(M.weekly.prize) + '</span><span class="who">Each ' +
       (M.weekly.allWeeks ? 'week' : 'regular season week') + ' (' + plural(M.weekly.weeks, 'week', 'weeks') + '). Ties split it.</span></div>';
     html += (M.prizes || []).map(function (p) {
-      var winner = p.winners && p.winners.length ? p.winners.map(function (id) { return '<b>' + esc(tname(id)) + '</b>'; }).join(' and ') : p.label ? '<b>' + esc(p.label) + '</b>' : 'To be decided';
+      var winner = p.winners && p.winners.length ? p.winners.map(function (id) { return '<b>' + esc(tname(id)) + '</b>'; }).join(' and ') : p.label ? '<b>' + esc(p.label) + '</b>' : 'To Be Decided';
       return '<div class="place"><span class="nm">' + esc(p.name) + '</span><span class="amt">' + money(p.amount) + '</span><span class="who">' + winner + '</span></div>';
     }).join('') + '</div>';
     var notes = [];
@@ -1173,7 +1173,7 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
     if (!f.ok) { el.innerHTML = ''; return; }
     var L = f.league, R = f.rules || {};
     var html = '<h1>League</h1><p class="lede">' + esc(L.name) + (L.founded ? ', since ' + esc(L.founded) : '') + '</p>';
-    html += '<h2>How It Works</h2><ul class="rules">' + (R.summary || []).concat(R.custom || []).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+    html += '<h2>How it Works</h2><ul class="rules">' + (R.summary || []).concat(R.custom || []).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
     var K = f.keepers;
     if (K && K.list && K.list.length && !inDraft()) html += '<h2>' + esc(K.season) + ' Keepers</h2>' + keeperIntro(K) + keeperTable(K.list, f.money);
     if ((f.options || {}).history !== false && (f.history || []).length) html += historyBlock(f);
@@ -1214,13 +1214,13 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
             (names && p.manager ? '<span class="t">' + esc(p.name) + '</span>' : '') + '</span></li>';
         };
         return '<div class="card season"><div class="season-head"><b>' + esc(s.season) + '</b><span class="sub">' + (s.teams ? esc(s.teams) + ' teams' : '') + '</span></div><ul class="season-list">' +
-          li('Champion', s.champion) + li('Runner-up', s.runnerUp) + li('Third place', s.third) + li('Most points', s.mostPoints, true) + '</ul></div>';
+          li('Champion', s.champion) + li('Runner-Up', s.runnerUp) + li('Third Place', s.third) + li('Most Points', s.mostPoints, true) + '</ul></div>';
       }).join('') + '</div>';
     return html;
   }
 
   // ====== Draft ======
-  var DRAFT_TYPES = { SNAKE: 'Snake draft', AUCTION: 'Auction draft', OFFLINE: 'Offline draft', AUTOPICK: 'Autopick draft' };
+  var DRAFT_TYPES = { SNAKE: 'Snake Draft', AUCTION: 'Auction Draft', OFFLINE: 'Offline Draft', AUTOPICK: 'Autopick Draft' };
   function draftWhen(ms) {
     var d = new Date(ms);
     return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) + ' at ' +
@@ -1307,7 +1307,7 @@ textarea.cm-in{min-height:84px;resize:vertical;font-size:14px;word-break:break-a
       '<form class="card cm-grid" data-cm="payment"><label>Team<select class="cm-in" id="cm-team">' + X.teams.map(function (t) {
         return '<option value="' + t.id + '">' + esc(t.name) + moneyTag(X, t) + '</option>';
       }).join('') + '</select></label><label>Amount<input class="cm-in" id="cm-amount" inputmode="decimal" placeholder="100 or -250"></label>' +
-      '<label>Note (optional)<input class="cm-in" id="cm-note" maxlength="200" placeholder="Venmo, cash, prize…"></label>' +
+      '<label>Note (Optional)<input class="cm-in" id="cm-note" maxlength="200" placeholder="Venmo, cash, prize…"></label>' +
       '<div><button class="btn acc" type="submit"' + (cm.busy ? ' disabled' : '') + '>' + (cm.busy ? 'Saving' : 'Save Payment') + '</button></div></form>';
     if (X.payments && X.payments.length) html += '<h3 class="subhead">Recent Payments</h3><div class="card tbl-wrap"><table class="tbl"><tbody>' + X.payments.map(function (p) {
       return '<tr><td>' + esc(p.team) + (p.note ? '<div class="mg">' + esc(p.note) + '</div>' : '') + '</td><td class="num big">' + money(p.amount, true) + '</td></tr>';

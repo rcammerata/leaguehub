@@ -1,21 +1,21 @@
-# Private leagues: ESPN cookies
+# Private Leagues: ESPN Cookies
 
 ESPN only shows a private league to its members. So League Hub reads your private league the way your own browser does: with the two cookies ESPN saves when you log in, called **espn_s2** and **SWID**. You copy them once and League Hub keeps them. They usually keep working for about a year.
 
-Public leagues don't need any of this. Not sure which yours is? Run **League Hub → Set up**. It tells you if the league is private.
+Public leagues don't need any of this. Not sure which yours is? Run **League Hub → Set Up**. It tells you if the league is private.
 
 You need a computer for this (phone browsers can't show cookies). It takes about two minutes.
 
 **Contents**
 
-- [Copy the cookies](#copy-the-cookies): [Chrome or Edge](#chrome-or-edge) · [Safari](#safari) · [Firefox](#firefox)
-- [Paste them into League Hub](#paste-them-into-league-hub)
-- [When they stop working](#when-they-stop-working)
-- [Keeping them safe](#keeping-them-safe)
+- [Copy the Cookies](#copy-the-cookies): [Chrome or Edge](#chrome-or-edge) · [Safari](#safari) · [Firefox](#firefox)
+- [Paste Them into League Hub](#paste-them-into-league-hub)
+- [When They Stop Working](#when-they-stop-working)
+- [Keeping Them Safe](#keeping-them-safe)
 
 ---
 
-## Copy the cookies
+## Copy the Cookies
 
 First, go to [fantasy.espn.com](https://fantasy.espn.com), log in with an ESPN account that's in the league (yours is fine) and open your league. Then follow the steps for your browser.
 
@@ -40,25 +40,25 @@ First, go to [fantasy.espn.com](https://fantasy.espn.com), log in with an ESPN a
 2. Open **Cookies** on the left and click **https://fantasy.espn.com**.
 3. Find **espn_s2** and **SWID**, and copy each one's **Value**.
 
-## Paste them into League Hub
+## Paste Them into League Hub
 
-**In the spreadsheet:** click **League Hub → ESPN cookies (private leagues)**, paste **SWID** and **espn_s2** into the two boxes and click **Save**. (During Set up, this window opens by itself.)
+**In the spreadsheet:** click **League Hub → ESPN Cookies (Private Leagues)**, paste **SWID** and **espn_s2** into the two boxes and click **Save**. (During Set Up, this window opens by itself.)
 
 **Or on the website:** open **Commissioner Tools** (link at the bottom of the website; needs the [commissioner passcode](setup.md#6-optional-extras)) and use the ESPN Cookies form. This works from a phone once you have the values.
 
 League Hub tests them with ESPN first and only saves them if ESPN accepts them. If it says ESPN didn't accept them, copy them again while logged in and retry. The usual mistakes are copying the cookie's name instead of its value, or missing part of the long espn_s2 value.
 
-## When they stop working
+## When They Stop Working
 
 Cookies end when ESPN ends that login, usually after about a year, or sooner if you log out of ESPN in that browser. When that happens:
 
 - The website keeps showing the last scores it had, with a note that scores couldn't update.
-- If **Email me when something breaks** is **Yes** on the Settings tab, you get an email (at most one a day).
-- **League Hub → Status and website address** shows "failed: ESPN needs a login".
+- If **Email Me When Something Breaks** is **Yes** on the Settings tab, you get an email (at most one a day).
+- **League Hub → Status & Website Address** shows "failed: ESPN needs a login".
 
 To fix it, copy fresh cookies (steps above) and paste them in. Updates start again right away.
 
-## Keeping them safe
+## Keeping Them Safe
 
 These two cookies are a login to your ESPN account, so treat them like a password:
 

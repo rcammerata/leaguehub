@@ -4,30 +4,30 @@ The Money page keeps the league's books. ESPN tracks the games, and League Hub t
 
 **Contents**
 
-- [How money works in League Hub](#how-money-works-in-league-hub)
-- [Turn it on](#turn-it-on)
+- [How Money Works in League Hub](#how-money-works-in-league-hub)
+- [Turn it On](#turn-it-on)
 - [Dues](#dues)
-- [Fees during the season](#fees-during-the-season)
+- [Fees During the Season](#fees-during-the-season)
 - [Prizes](#prizes)
-- [The settle-up](#the-settle-up)
-- [Recording payments](#recording-payments)
-- [A full example](#a-full-example)
-- [Good to know](#good-to-know)
+- [The Settle-Up](#the-settle-up)
+- [Recording Payments](#recording-payments)
+- [A Full Example](#a-full-example)
+- [Good to Know](#good-to-know)
 
 ---
 
-## How money works in League Hub
+## How Money Works in League Hub
 
 Like most leagues, money changes hands twice:
 
 1. **Before the season: dues.** Each team pays the entry fee, plus its keeper fees in a keeper league.
 2. **After the season: the settle-up.** Each team's pickup and trade fees are weighed against what it won (weekly high scores and season prizes). The league pays each team the difference, or the team pays the league.
 
-If your league settles everything at the end instead (entry fee included), set **Entry fee is due** to **At the end of the season** on the Settings tab. Then there's just one settle-up.
+If your league settles everything at the end instead (entry fee included), set **Entry Fee Is Due** to **At the End of the Season** on the Settings tab. Then there's just one settle-up.
 
-## Turn it on
+## Turn it On
 
-On the **Settings** tab, set **Money page** to **Yes**, then fill in the fees and prizes you use (see [Settings](settings.md#money)). Leave a fee at `0` if your league doesn't have it.
+On the **Settings** tab, set **Money Page** to **Yes**, then fill in the fees and prizes you use (see [Settings](settings.md#money)). Leave a fee at `0` if your league doesn't have it.
 
 ## Dues
 
@@ -46,16 +46,16 @@ Rounds you leave out are free. The League page shows each keeper with its tag an
 
 The Money page lists every team that still owes dues, and how much. Once a team's payments cover its dues, it moves to the "Paid" list.
 
-## Fees during the season
+## Fees During the Season
 
-- **Pickup fee**: for each player a team adds (free agents and waiver claims, counted by ESPN), after its free pickups.
-- **Trade fee**: for each trade a team makes. Both teams in a trade pay it.
+- **Pickup Fee**: for each player a team adds (free agents and waiver claims, counted by ESPN), after its free pickups.
+- **Trade Fee**: for each trade a team makes. Both teams in a trade pay it.
 
 These add up during the season and are settled after it, so nobody has to pay a couple of dollars every week.
 
 ## Prizes
 
-**Weekly high score**: the week's top scorer wins the weekly prize. If two teams tie, they split it. By default only regular season weeks count. Set **Weekly prize weeks** to **Every week** to include the playoffs.
+**Weekly High Score**: the week's top scorer wins the weekly prize. If two teams tie, they split it. By default only regular season weeks count. Set **Weekly Prize Weeks** to **Every Week** to include the playoffs.
 
 **Season prizes** are the rows of the Prizes table on the Settings tab. Each prize is either:
 
@@ -66,7 +66,7 @@ The **pot** is every team's dues plus every fee. So if your percents add up to 1
 
 League Hub fills in the winners as soon as they're decided (see [Settings](settings.md#prizes) for each rule). You can also type a team name for a prize you award yourself.
 
-## The settle-up
+## The Settle-Up
 
 For each team, the settle-up is:
 
@@ -78,7 +78,7 @@ For each team, the settle-up is:
 
 During the season, the Money page shows where each team stands **so far**. After the championship it's the final amount. Click a team to see how its number adds up.
 
-## Recording payments
+## Recording Payments
 
 Every payment is one row on the **Payments** tab:
 
@@ -98,23 +98,23 @@ You can also record payments from your phone: **Commissioner Tools** on the webs
 
 If a row's team doesn't match any team (for example after a team is renamed on ESPN), Commissioner Tools points it out. Fix the name on the Payments tab.
 
-## A full example
+## A Full Example
 
 A 10-team league with a $100 entry fee, $2 pickups after 5 free ones, $5 trades, a $20 weekly prize for 14 weeks, and the default prizes (50%, 25%, 10%, 15%).
 
-**Before the season**, each team pays $100 in dues: **$1,000**.
+**Before the Season**, each team pays $100 in dues: **$1,000**.
 
-**During the season**, teams run up **$150** in pickup and trade fees. The pot is $1,000 + $150 = **$1,150**.
+**During the Season**, teams run up **$150** in pickup and trade fees. The pot is $1,000 + $150 = **$1,150**.
 
 - Weekly prizes: 14 weeks × $20 = **$280**.
 - Left for the percent prizes: $1,150 − $280 = **$870**: Champion $435, Runner-up $217.50, Third place $87, Most points $130.50.
 - $280 + $870 = $1,150, the whole pot.
 
-**After the season**, one team made 8 pickups (3 over the free 5: $6) and 1 trade ($5), so its fees are $11. It won two weekly prizes ($40). Its settle-up is $40 − $11 = **Gets $29**. Pay it, record −29 on the Payments tab, and it shows **Settled**.
+**After the Season**, one team made 8 pickups (3 over the free 5: $6) and 1 trade ($5), so its fees are $11. It won two weekly prizes ($40). Its settle-up is $40 − $11 = **Gets $29**. Pay it, record −29 on the Payments tab, and it shows **Settled**.
 
-## Good to know
+## Good to Know
 
 - Anyone with the website's link can see the Money page. If your league would rather keep money private, leave it off.
 - League Hub never moves money. It only keeps track of it.
-- The numbers update with everything else, every few minutes during games. A payment you add on the Payments tab shows up within a few minutes (or right away with **League Hub → Update now**).
-- **League Hub → Status and website address** warns you if your prizes add up to more than the pot.
+- The numbers update with everything else, every few minutes during games. A payment you add on the Payments tab shows up within a few minutes (or right away with **League Hub → Update Now**).
+- **League Hub → Status & Website Address** warns you if your prizes add up to more than the pot.
